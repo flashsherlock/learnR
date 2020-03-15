@@ -1,0 +1,445 @@
+---
+title: "An R Markdown Tutorial on bookdown, blogdown, and xaringan"
+subtitle: "Creating books, websites, and presentations"
+author: "[Yihui Xie](https://yihui.org)"
+date: "2017/11/03 @ University of Nebraska-Lincoln"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: css/0927.css
+    chakra: remark/0.14.1.min.js
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+      beforeInit: js/macro.js
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+# Software setup
+
+Before you come to the class, please read [this post](https://github.com/rbind/yihui/issues/30) for instructions on software installation.
+
+# Prerequisites
+
+You should have basic knowledge about R Markdown. If you don't, take the lessons at: http://rmarkdown.rstudio.com.
+
+---
+class: inverse, center
+background-image: url(https://bookdown.org/yihui/bookdown/images/logo.png)
+
+# bookdown
+
+---
+
+# Problems
+
+Over about ten years as a student in statistics, I have had
+these beliefs:
+
+- books should have been much easier to write (technically)
+
+- cheaper to buy (on the order of $10)
+
+- richer to read (dynamic content -- imagine you can fit a linear regression right inside the book)
+
+- quicker to iterate (not waiting for eight years for a second edition)
+
+- and authored by a small number of people but have attracted a large number of contributors (on the order of 100) instead of only relying on the feedback of three anonymous reviewers
+
+---
+
+# Why are you giving up?
+
+When you open a LaTeX editor to write a book, or see a book of $300, or think about writing the 2nd edition of your book...
+
+--
+
+.center[![:image 60%](gif/give-up.gif)]
+
+---
+
+# We need to put an end to that
+
+.center[![:image 70%](gif/panda-no.gif)]
+
+---
+
+# Changing just a tiny little bit in my LaTeX tabular
+
+.center[![:image 70%](gif/latex-tweak.gif)]
+
+[via Research in Progress](http://bit.ly/tbrLtx)
+
+---
+
+# Word?
+
+Write a paragraph? Good. Another paragraph? Okay. Eventually...
+
+--
+
+.center[![:image 70%](gif/kid-waves.gif)]
+
+---
+
+# Markdown
+
+Easy! Ready? Go!
+
+--
+
+.center[![](gif/get-into-the-car.gif)]
+
+---
+
+# R Markdown
+
+Much more force (Pandoc + R)
+
+--
+
+.center[![:image 70%](gif/git-push-force.gif)]
+
+---
+
+# bookdown
+
+Make you look awesome with a simple tool (https://bookdown.org)
+
+--
+
+.center[![:image 70%](gif/duiyou-4.gif)]
+
+---
+
+# Demo
+
+- One set of Rmd files, multiple types of output (PDF/HTML/EPUB)
+
+- Extended Pandoc's Markdown to support figure/table numbers and cross-references
+
+- Can embed interactive content like HTML widgets/Shiny apps (if output is not HTML, take screenshots automatically)
+
+- Gitbook style
+    - Borrowed from gitbook.com but replaced the Markdown renderer
+    - Responsive
+    - Themes
+    - The Edit button
+    - Search, download, share buttons
+
+- RStudio integration (preview version)
+    - One-click to preview, build, or publish the book
+
+---
+
+# When you try it by yourself
+
+- You might run into certain issues that you don't understand
+
+--
+
+.center[![:image 300px](gif/overhead-bin.gif)]
+
+- Don't panic; you may [file issues to Github](https://github.com/rstudio/bookdown) or ask questions on StackOverflow with the tag `bookdown`
+
+---
+class: inverse, center
+background-image: url(https://bookdown.org/yihui/blogdown/images/logo.png)
+
+# blogdown
+
+---
+
+# If you don't have experience with building websites, great!
+
+Follow a few simple steps, and you can have a website up and running in a few minutes.
+
+--
+
+.center[![](gif/dog-stairs.gif)]
+
+---
+
+# However, if you do...
+
+It may take you several days before you can actually use **blogdown**, because you may look at too many things on a page and want to customize them.
+
+--
+
+.center[![:image 70%](gif/look-hard.gif)]
+
+???
+
+Because (1) you may have an existing website to migrate; (2) you may spend a huge amount of time on tweaking your theme (CSS, Hugo templates, etc).
+
+---
+class: center
+
+.pull-left[
+![](gif/html-body.jpg)
+]
+
+.pull-right[
+.center[![:image 80%](gif/italic.jpg)]
+]
+
+## A quick test on whether you have any experience with building websites (HTML)
+
+---
+
+# Get started
+
+- If you have RStudio [>= v1.1.28](https://www.rstudio.com/products/rstudio/download/), you can create a website project via `File -> New Project`.
+
+    - You can choose a Hugo theme (https://themes.gohugo.io).
+
+--
+
+- You don't have to use RStudio: `setwd()` to an empty directory first, then run:
+
+    ```r
+    # automatically install Hugo, create a site, download a theme,
+    # add sample posts, and start a local web server
+    blogdown::new_site()
+    ```
+
+---
+
+# A brief intro to a Hugo website
+
+- directory structure
+
+    - `content/`
+        
+        - `about.md`
+        
+        - `post/`
+
+    - `themes/`: there may be multiple themes
+    
+    - `static/`: everything is copied to `public/`
+    
+    - `public/`: the generated website that can be uploaded to any web server (Netlify, Github pages, Amazon S3, ...)
+
+- a Markdown file or an R Markdown file
+
+    - YAML metadata (title, author, date, tags, ...)
+    
+    - body
+
+---
+
+# Demo
+
+- The default new site
+
+    - the hugo-lithium theme
+
+- Use other themes, e.g.
+
+    - [jbub/ghostwriter](https://github.com/jbub/ghostwriter)
+    
+    - [gcushen/hugo-academic](https://github.com/gcushen/hugo-academic)
+    
+    - [kakawait/hugo-tranquilpeak-theme](https://github.com/kakawait/hugo-tranquilpeak-theme)
+
+- My advice on themes (you won't listen anyway):
+
+    - you will naturually have strong desire for fancier themes, but I recommend you to try simpler themes in the beginning
+
+    - spend more time on creating the content
+    
+    - you will be tired of your theme someday, no matter how good it looks for now
+
+---
+
+# RStudio IDE support
+
+- Create a new website project
+
+- RStudio addins
+
+    - "Serve Site" (set `options(servr.daemon = TRUE)` first)
+    
+    - "New Post"
+    
+    - "Update Metadata"
+
+- A typical workflow
+
+    - Open your website project, click the "Serve Site" addin
+    
+    - Revise old pages/posts, or click the "New Post" addin
+    
+    - Write and save (take a look at the automatic preview)
+    
+    - Push everything to Github, or upload the `public/` directory to Netlify directly
+
+???
+
+If you do not see the addins, you need to update your RStudio IDE.
+
+---
+
+# Publishing / Deployment
+
+- Many possibilities, but I'll mention only two today
+
+- Netlify is my favorite (https://app.netlify.com)
+
+    - Hugo support (also other static site generators)
+    
+    - Free CDN
+    
+    - Free `*.netlify.com` subdomain
+    
+    - Bind your own custom domain for free, and also enable HTTPS for free
+    
+    - Flexible redirect rules
+
+- Two methods:
+
+    1. Direct upload
+    
+    1. Continuous deployment through Github
+
+---
+
+# Rbind
+
+- https://github.com/rbind
+
+- Welcome to Rbind if
+
+    - you want to set up your website but do not know enough about web technologies such as how domain names work
+    
+    - or want a free subdomain `*.rbind.io` (I recommend you to register your own apex domain if you can afford it; it is fairly cheap)
+    
+    - or want to share your website source with other people
+
+---
+
+# Two examples at UNL
+
+- Prof Andrew Tyre: https://drewtyre.rbind.io
+
+- Zhian N. Kamvar: https://zkamvar.github.io
+
+--
+
+.center[![](gif/awesome-me.gif)]
+
+---
+
+# So what is blogdown?
+
+- An R package based on [R Markdown](https://rmarkdown.rstudio.com) and [Hugo](https://gohugo.io)
+
+- R Markdown <img src="https://www.rstudio.com/wp-content/uploads/2015/12/RStudio_Hex_rmarkdown.png" width="10%" align="right" />
+
+    - (relatively) simple syntax for writing documents
+    
+    - the simpler, the more portable (not only HTML output, but also PDF, Word, EPUB, etc, thanks to Pandoc)
+    
+    - not only convenient (maintenance), but also reproducible
+    
+    - most features of R Markdown _and_ [**bookdown**](https://bookdown.org) (technical writing)!!
+
+- Hugo <img src="https://gohugo.io/img/hugo.png" width="10%" align="right" />
+
+    - free, open-source, and easy to install (a single binary)
+    
+    - lightning fast (generates one page in one millisecond)
+    
+    - general-purpose (not only for blogs)
+
+???
+
+Pandoc's Markdown: paragraphs, section headings, (un)numbered lists, blockquotes, math expressions, tables, images, footnotes, bibliography/citations, ...
+
+See Chapter 2 of the **bookdown** book for additional Markdown features, such as figure/table captions, cross-references, numbered equations, theorems, ...
+
+---
+
+# Why not WordPress, Tumblr, Medium.com, Blogger.com, etc?
+
+- No R Markdown support (even math support is often nonexistent or awkward)
+
+- Huge benefits of static websites compared to dynamic websites
+
+    - all static files, no PHP or databases, no login/password, work everywhere (even offline)
+    
+    - typically fast to visit (no computation needed on the server side), and easy to speed up via CDN
+
+- Personal experience (I've been blogging since 2005)
+
+    - I've uesd several PHP applications before, and I didn't feel I truly "own" a website until I switched to static sites
+    
+    - e.g. WordPress is open-source but still a big black-box to me
+
+???
+
+If all you want to write about is what you had for breakfast today, or how cute your kittens are, there is no need to use blogdown. If there is anything related to R, statistical computing, and/or graphics, blogdown will be much more convenient.
+
+---
+
+# Why should you have a website?
+
+- I web, therefore I am ~~a spiderman~~. <sup>*</sup>
+
+.footnote[
+[\*] From the preface of the **blogdown** book.
+]
+
+- Share what you have learned with other people, _and_ your future self!
+
+--
+
+.center[![](gif/saw-branch.gif)]
+
+---
+
+# Why should you have a website?
+
+- My first Chinese blog post was on Jan 7, 2005: https://yihui.org/cn/, and English post was on Aug 12, 2007: https://yihui.org/en/ The most important lesson I learned?
+
+    - Listen / read / tweet and forget; write and remember!
+    
+    - I wrote a large amount of garbage and bullshit over the ten years (nearly a thousand posts), but I tend to think more deeply when I write something than when I talk or read.
+    
+    - Among all the garbage I produced, there might be a gem or two.
+
+- Not convinced? How about the book "[Amusing Ourselves to Death](https://en.wikipedia.org/wiki/Amusing_Ourselves_to_Death)"?
+
+???
+
+- Let other people know more about you.
+
+- I often flip through my own posts to find some tricks I learned but forgot.
+
+- My first English post was about tidying R code: https://yihui.org/en/2007/08/tidy-up-your-r-code/ The idea was turned into the **formatR** package, and I'm still maintaining it 10 years later!
+
+---
+
+# Take-home message
+
+- You can find everything from the Github repo: https://github.com/rstudio/blogdown
+
+    - including the documentation (as a book based on **bookdown**) at https://bookdown.org/yihui/blogdown
+
+---
+
+# Enjoy blogdown and your website!
+
+.center[![](gif/slam-dunk.gif)]
+
+---
+class: inverse, center
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
+
+# xaringan
+
+.footnote[Slides at http://bit.ly/xaringan.]

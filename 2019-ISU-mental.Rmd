@@ -1,0 +1,705 @@
+---
+title: "My failures and perplexities"
+subtitle: "as a former PhD student at Iowa State and later a software engineer at RStudio"
+author: "[Yihui Xie](https://yihui.org), RStudio"
+date: "2019/10/11 @ Department of Statistics, ISU"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    chakra: remark/0.14.1.min.js
+    css: css/pagedown.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: js/macro.js
+---
+
+## Slides at: http://bit.ly/isu-talk
+
+---
+background-image: url(https://user-images.githubusercontent.com/163582/66625949-01516000-ebbc-11e9-8bfe-6749d8c4d1ff.JPG)
+background-size: cover
+class: right, inverse, bottom
+
+### My great pleasure to come back!
+
+???
+
+The young have become old. The old have become bald.
+
+When I entered Snedecor Hall yesterday, I saw this cute poster with my south part avatar on several doors. I feel as if I were a missing person or a criminal wanted by the police :)
+
+---
+
+class: center
+
+## The problem
+
+![:image 80%, a beautiful ski picture](gif/nice-ski-pic1.jpg)
+
+---
+
+class: center
+
+## The problem
+
+![:image 80%, behind the scenes](gif/nice-ski-pic2.gif)
+
+---
+class: center, inverse
+background-image: url(https://images.unsplash.com/photo-1548391350-968f58dedaed?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80)
+background-size: cover
+
+## Too much focus on the bright side
+
+???
+
+You probably wouldn't appreciate the moon if it were always full and didn't have all the phases.
+
+---
+
+## Carl Jung
+
+> The most terrifying thing is to accept oneself completely.
+
+--
+
+<!-- -->
+
+> People will do anything, no matter how absurd, to avoid facing their own souls.
+
+--
+
+<!-- -->
+
+> There is no coming to consciousness without pain.
+
+---
+
+## Carl Jung
+
+> Shame is a soul eating emotion.
+
+--
+
+<!-- -->
+
+> Knowing your own darkness is the best method for dealing with the darknesses of other people.
+
+.footnote[https://www.purposefairy.com/81925/38-life-changing-lessons-to-learn-from-carl-jung/]
+
+???
+
+When talking about failures, you may feel shameful, but you shouldn't let the same control you. It is a destructive emotion.
+
+---
+background-image: url(https://images.unsplash.com/photo-1513082325166-c105b20374bb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80)
+background-size: cover
+
+# My early career crisis
+
+### Full post: https://yihui.org/en/2018/02/career-crisis/
+
+???
+
+It is a lengthy post. In case you don't have time to read it, I'm giving this talk.
+
+---
+
+## How I came to Iowa State
+
+- I had strong interest in statistical graphics (started writing a book in Chinese about R graphics in 2007---of course, never finished)
+
+- The **animation** package and the website https://R.yihui.org
+
+- Met Prof Di Cook (now at Monash U) and Prof Heike Hofmann in Germany in 2008
+
+---
+
+## What I did during my PhD study
+
+- Courses and endless homework assignments
+
+- R package **animation** (visualize methods and algorithms)
+
+- Capital of Statistics ( 统计之都, https://cosx.org)
+
+- R package **cranvas** (http://cranvas.org)
+
+    - I really enjoyed the work, e.g. http://cranvas.org/examples/qscatter.html
+
+- R package **knitr** (https://yihui.org/knitr/)
+
+    - for myself to do my homework assignments more efficiently
+
+???
+
+I loved all these work on software and COS, but I probably loved my side-projects too much.
+
+---
+
+## My failures in the 4.5 years
+
+.pull-left[
+- The big one: the **cranvas** project was abandoned mainly because of me
+
+- Last-minute PhD thesis
+
+- Summer internships
+]
+
+.pull-right[
+- Little effort in research <sup>*</sup>
+
+- Few publications
+
+- Little communication with people in the department
+]
+
+.footnote[
+[*] I probably checked out two books in total from the library.
+]
+
+???
+
+PhD students are required to send their theses to committee two weeks in advance, but I only sent them a Dropbox link, because I knew those busy professors would procrastinate on actually reading my thesis. I finished my thesis in the last minute before my defense.
+
+For the first intership, I met my advisor for about five times in the whole summer, including once in the restroom.
+
+I wish I had talked to more people in the department, e.g. Dr Kaiser and Dr Nettleton.
+
+---
+
+## The bright side
+
+- A lot of (invited) talks
+
+- Famous in the R community (and in China); tons of followers on Twitter and Github
+
+- The Snedecor Award recipient
+
+- Wrote a book (and donated royalties to the department)
+
+- I had mixed feelings about myself, but the good feelings often won. Why?
+
+???
+
+I started developing the **knitr** package without telling my advisors. I became much more fascinated by **knitr** than **cranvas**.
+
+Recall Carl Jung's words: it is terrifying to accept oneself completely, and you'll automatically avoid your dark side.
+
+---
+background-image: url(https://user-images.githubusercontent.com/163582/66626624-82115b80-ebbe-11e9-9115-993034e0103b.jpg)
+background-size: 100%
+class: inverse
+
+???
+
+For example, when I know **knitr** has been widely used by thousands of people, while few people have expressed interest in **cranvas**, I'll just enjoy the sense of accomplishment from **knitr**.
+
+When you give a talk in an auditorium to hundreds of people, you might forget about your advisor and your PhD thesis.
+
+I was contributing to open source to promote the practice of reproducible research, and people loved my work, which gave myself justifications for procrastinating on the work I should have done.
+
+---
+
+### Why Doing Good Makes It Easier to Be Bad
+
+> Charity creates a multitude of sins.
+
+> --- Oscar Wilde
+
+http://nautil.us/blog/why-doing-good-makes-it-easier-to-be-bad
+
+???
+
+This applies not only to open source. Charity offers you a moral license to do bad things perhaps unconsciously.
+
+For example, after you did a great amount of exercise in the gym, you may allow yourself to eat chocolates, candies, or cakes.
+
+---
+
+### Charlie Munger: Poor Charlie's Almanack
+
+.smaller[
+> _It's not the bad ideas that do you in, it's the good ideas._ And you may say, "That can't be so. That's paradoxical." What he [Graham] meant was that if a thing is a bad idea, it's hard to overdo. _But where there is a good idea with a core of essential and important truth, you can't ignore it. And then it's so easy to overdo it._ So the good ideas are a wonderful way to suffer terribly if you overdo them.
+]
+
+Example: Chris Carrigan -- [Saving lives, or costing them? The unintended consequences of data protection](https://rss.onlinelibrary.wiley.com/doi/10.1111/j.1740-9713.2019.01320.x)
+
+???
+
+I read about the consequences of GDPR in the latest issue of the Significance Magazine. Cancer patients want to share their data to help with cancer research, but GDPR has made it terribly difficult.
+
+---
+
+## The career at RStudio
+
+- Spoiled by the freedom in graduate school, I joined RStudio with even more freedom
+
+- I was expected to work on Shiny, but I spent most of my time on **knitr** and other interesting side-projects
+
+- My boss was finally frustrated and left me alone
+
+- The president kindly reminded me but I didn't listen
+
+- After a terrible winter vacation in 2015, I almost crashed
+
+- Still made too many promises even in this situation (e.g. to ICSA)
+
+---
+
+## My perplexities about work
+
+- Empathy: how much should I give?
+
+    - Too many issues to solve. Too many people to help.
+    - https://github.com/rstudio/rmarkdown/issues/1480
+    - https://yihui.org/en/2019/05/rtfm-or-itfm/
+    - https://github.com/rstudio/DT/issues/718
+    - https://github.com/rstudio/blogdown/issues/408
+    - https://github.com/rstudio/blogdown/issues/409
+    - Cal Newport: [Deep Work](https://www.calnewport.com/books/deep-work/)
+
+- How to become successful without an inflated ego?
+
+    - Two deadly flaws of people: the ego and blind spots (Ray Dalio: Principles)
+    - Reduce the usage of social media?
+    - Or even become a hermit like Donald Knuth?
+
+---
+
+## The cure
+
+- My salary was reduced by 1/3 (and raised later)
+
+- Try harder on _communication_
+
+- Work with _pre-approved_ freedom
+
+--
+
+- Don't expect an eternal cure. My talk won't save you once and for all. It even won't save myself forever.
+
+---
+
+## Ray Dalio: Principles
+
+.smaller[
+> "Instead of feeling frustrated or overwhelmed, I saw pain as nature's reminder that there is something important for me to learn."
+
+> "The most valuable habit I've acquired is using pain to trigger quality reflections."
+
+> "Everyone makes mistakes. The main difference is that successful people learn from them and unsuccessful people don't."
+]
+
+---
+
+## I was not alone
+
+- After I published the blog post about my career crisis, I received a lot of comments and private emails.
+
+- Many people suffered from similar anxiety and depression because of procrastination, but they kept those negative feelings to themselves.
+
+- I have rarely heard a graduate student who does not procrastinate.
+
+---
+
+## Who (else) to blame?
+
+.pull-left[
+- It is our fault, but not completely so.
+
+- The [attention economy](https://en.wikipedia.org/wiki/Attention_economy). Too many distractions.
+
+- [Attention deficit hyperactivity disorder](https://en.wikipedia.org/wiki/Attention_deficit_hyperactivity_disorder) (ADHD)?
+]
+
+![:image 50%, You cannot move your eyes off the screen](https://static.highexistence.com/wp-content/uploads/2018/08/modern-life-depression-screens.jpg)
+
+.footnote[https://highexistence.com/5-reasons-modern-life-depression/]
+
+---
+background-image: url(https://static.highexistence.com/wp-content/uploads/2018/08/Screen-Shot-2018-10-04-at-6.18.21-PM.png)
+background-size: contain
+background-position: 0 -50px
+class: bottom
+
+## This should be the news title every day if the media were unbiased...
+
+???
+
+Should you be more concerned by terrorists or sugar? Diabetes kill more people than criminals and wars now. In 2012, 620k people died of violence, 800k committed suicide, 1.5m died of diabetes.
+
+---
+class: center
+
+![so much breaking news](https://static.highexistence.com/wp-content/uploads/2018/08/modern-life-depression-news.jpg)
+
+.smaller[
+> One single heartbreaking story should have made us sleepless at night for a month...
+
+> --- [Amusing Ourselves to Death](https://en.wikipedia.org/wiki/Amusing_Ourselves_to_Death) (Neil Postman)
+]
+
+???
+
+.smaller[
+> When I was a child  
+I caught a fleeting glimpse  
+Out of the corner of my eye  
+I turned to look but it was gone  
+I cannot put my finger on it now  
+The child is grown  
+The dream is gone  
+And I have become  
+Comfortably numb
+]
+
+---
+
+## The "information-action ratio"
+
+- Postman's concept (No, you won't take any actions)
+
+- Aaron Swartz: [I Hate the News](http://www.aaronsw.com/weblog/hatethenews)
+
+.smaller[
+> Instead of watching hourly updates, why not read a daily paper? Instead of reading the back and forth of a daily, why not read a weekly review? Instead of a weekly review, why not read a monthly magazine? Instead of a monthly magazine, why not read an annual book?
+]
+
+???
+
+I discovered a blog post written by Aaron Swartz in 2017.
+
+---
+
+## Instant messaging
+
+- Why I no longer reply to your instant messages (e.g. on WeChat or Slack)
+
+- Does it have to be _instant_? Are you able to make _instant decisions_ if I reply? Do you need instant decisions?
+
+- Consequences of advances in technology? Compare instant messages with hand-written letters. Think about how people argue before Internet was invented. Recall how we watched TV 20 years ago and compare the entertainment programs today.
+
+- Problem: little time to plan anything ahead.
+
+???
+
+The pace of communication is so fast.
+
+---
+
+.smaller[
+> "Decide in your heart of hearts what really excites you and challenges you, and start moving your life in that direction.  Every decision you make, from what you eat to what you do with your time tonight, turns you into who you are tomorrow, and the day after that.  Look at who you want to be, and start sculpting yourself into that person.  You may not get exactly where you thought you'd be, but you will be doing things that suit you in a profession you believe in. _Don't let life randomly kick you into the adult you don't want to become._"
+
+> --- Chris Hadfield
+]
+
+???
+
+In one of the emails that the RStudio president sent me, he quoted Chris Hadfield.
+
+---
+
+## My advice
+
+- Learn more about Dalio's Principles. If you don't want to read the book, [here is a summary](https://commoncog.com/blog/the-principles-sequence/).
+
+- If you don't even want to read the summary, listen to this advice from him: form a habit of _writing things down_ (e.g. you can start a blog or write a private diary).
+
+- Before you get rid of the social media or news addiction (how to verify that?), try to ignore them as much as you can. FOMO (fear of missing out) is imaginery.
+
+- Time management: https://yihui.org/en/2017/09/time-management/
+
+???
+
+Open Twitter/Facebook or any social media, stare at the notification icon for 30 seconds, and close it.
+
+---
+
+## My advice
+
+- Routinely do small tasks that you don't really like (e.g. I've been doing 50 push-ups and 50 sit-ups every day for a few years). Train yourself to accept the unpleasant feelings. Or equivalently, try to deliberately give up little things you enjoy (e.g. refrain from eating the refreshments before seminars).
+
+- Allow other people to help you. They could be your advisors, classmates, friends, or family members. And even strangers! https://melmagazine.com/en-us/story/focusmate-review-productivity-work-hack
+
+???
+
+Earl asked me whether I want refreshments before the seminar, and I said a firm No. I'm a minimalist.
+
+---
+
+> "Perhaps the most valuable result of all education is the ability to _make yourself do the thing you have to do_, when it ought to be done, whether you like
+it or not. It is the first lesson that ought to be learned and however early a man's training begins, it is probably the last lesson that he learns thoroughly."
+
+> --- Thomas Henry Huxley
+
+???
+
+It is hard. Trust me. It is much harder than measure theory and probability theory.
+
+---
+
+## Caveats
+
+Be careful about _talking_ about your failures or plans. You may be surprised by how good you are at satisfying yourself.
+
+.smaller[
+> Since both actions and talk create symbols in your brain, talking satisfies the brain enough that it "neglects the pursuit of further symbols." --- [Derek Sivers](https://sivers.org/zipit)
+]
+
+Gollwitzer, P. M., Sheeran, P., Michalski, V., & Seifert, A. E. (2009). [When intentions go public: Does social reality widen the intention-behavior gap?](https://s18798.pcdn.co/motivationlab/wp-content/uploads/sites/6235/2019/02/gollwitzer-et-al-2009-when-intentions-go-public.pdf) Psychological Science, 20, 612-618.
+
+???
+
+So it is actually quite dangerous for me to give this talk, because it also gives me satisfaction.
+
+---
+
+## More general advice on wisdom
+
+- If you think you are smart or wise, check out https://en.wikipedia.org/wiki/List_of_cognitive_biases
+
+- I have benefited a lot from reading books, e.g.
+
+    - Charlie Munger: "Poor Charlie's Almanack"
+    - Yuval Harari: "Sapiens: A Brief History of Humankind", "21 Lessons for the 21st Century", and "Homo Deus: A Brief History of Tomorrow"
+    - Arthur Schopenhauer: "The Wisdom of Life: And Other Essays"
+    - Byung-Chul Han (한병철): "The Burnout Society", "Psychopolitics: Neoliberalism and New Technologies of Power", "In the Swarm: Digital Prospects"
+    - Marie Kondo: "The Life-Changing Magic of Tidying Up: The Japanese Art of Decluttering and Organizing"
+    - Mikhail Aleksandrovich Sholokhov: "And Quiet Flows the Don"
+    - Sigmund Freud: "Civilization and Its Discontents"
+
+???
+
+I don't consider myself a wise person, but Charlie Munger [said](https://www.valueinvestingworld.com/2014/05/charlie-munger-on-wisdom-acquisition.html):
+
+> Wisdom acquisition is a moral duty.
+
+---
+
+## Why reading essays and poems, too?
+
+- I have been heavily influenced by the Chinese manhua artist and essayist [Feng Zikai](https://en.wikipedia.org/wiki/Feng_Zikai) (丰子恺, 1898 - 1975)
+
+- "Silentium!" by [Fyodor Tyutchev](https://en.wikipedia.org/wiki/Fyodor_Tyutchev) (1803 - 1873) is one of my favorite poems (丘特切夫《别声张》)
+
+???
+
+Take a little bit time to live in an isolated world, or view the world in isolation. In one of Feng Zikai's essays, he mentioned the joy of kids when they look at the world upside down from between their legs or through a frame made by their fingers.
+
+---
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Fedor_Tutchev.jpg/500px-Fedor_Tutchev.jpg)
+background-position: top right
+background-size: 20%
+
+.smaller[
+Speak not, lie hidden, and conceal  
+the way you dream, the things you feel.  
+Deep in your spirit let them rise  
+akin to stars in crystal skies  
+that set before the night is blurred:  
+delight in them and speak no word.
+
+How can a heart expression find?  
+How should another know your mind?  
+Will he discern what quickens you?  
+A thought, once uttered, is untrue.  
+Dimmed is the fountainhead when stirred:  
+drink at the source and speak no word.
+
+Live in your inner self alone  
+within your soul a world has grown,  
+the magic of veiled thoughts that might  
+be blinded by the outer light,  
+drowned in the noise of day, unheard...  
+take in their song and speak no word.
+]
+
+---
+class: inverse, center, middle
+
+## Wait a minute.
+
+## This is a talk for STAT-ers!
+
+--
+
+Let's talk a little about statistics...
+
+---
+
+## Some random thoughts (perplexities)
+
+Disclaimer: I've been working as a software engineer for six years, and have forgotten most of things about statistics I learned in my courses here (sorry, professors!), so I may not be qualified to comment on statistics now.
+
+---
+
+## Data science
+
+- Data science = statistics or computer science?
+
+- Claiming ownership is funny in my eyes (like two kids fighting over something for weird reasons)
+
+- Andrew Gelman: [Statistics is the least important part of data science](https://statmodeling.stat.columbia.edu/2013/11/14/statistics-least-important-part-data-science/)
+
+???
+
+I have two little boys. When someone farted, sometimes they fight over the ownership of the fart. "I farted!" "No, I farted!"...
+
+---
+
+## Stat inference vs stat thinking
+
+.smaller[
+> [...] formal, probability-based statistical inference should play no role in most scientific research, [...]
+
+> [...] _Replicating and predicting findings in new data and new settings_ is a stronger way of validating claims than blessing results from an isolated study with statistical inferences.
+
+> --- Christopher Tong: [Statistical Inference Enables Bad Science; Statistical Thinking Enables Good Science](https://www.tandfonline.com/doi/full/10.1080/00031305.2018.1518264)
+]
+
+---
+
+## The religious belief in P < 0.05
+
+.smaller[
+> It turns out that Francis Edgeworth, who introduced "significant" in statistics, and Karl Pearson, who popularized it in statistics, used it differently than we do. For Edgeworth and Pearson, _"being significant" meant "signifying"_. An observed difference was significant if it signified a real difference, and you needed a very small p-value to be sure of this. _A p-value of 5% meant that the observed difference might be significant, not that it definitely was._
+
+> --- Glenn Shafer, [On the origins of "statistical significance"](https://statmodeling.stat.columbia.edu/2019/09/26/glenn-shafer-tells-us-about-the-origins-of-statistical-significance/)
+]
+
+???
+
+You must have heard a lot of debates on P-values, but this perspective is an interesting one.
+
+A P-value less than .05 means a starting point rather than the end.
+
+---
+
+## On teaching: the many things that are the same thing
+
+Jonas Kristoffer Lindeløv: [Common statistical tests are linear models (or: how to teach stats)](https://lindeloev.github.io/tests-as-linear/)
+
+???
+
+Do we still need to teach t-test, ANOVA, ANCOVA, Chi-square test, ...?
+
+---
+
+## The hard problem is not data or stats
+
+.smaller[
+> The hard part is not the data wrangling. That is just time consuming. The hard part is the people wrangling.
+
+> --- [Lisa Thomasen](https://twitter.com/apreshill/status/1179256184487981056)
+
+<!-- -->
+
+> No amount of statistical expertise or tooling can fix this fundamental human problem.
+
+> --- Roger Peng, [What can we learn from data analysis failures?](https://simplystatistics.org/2018/04/23/what-can-we-learn-from-data-analysis-failures/)
+]
+
+---
+
+## Weird things about academia
+
+.smaller[
+> Students should not be terrified of getting their citation *format* wrong. Formatting should, at MOST, be a very minor consideration—not worth a half or full grade! That traumatizes students, makes them think form > content.
+
+> Stop.
+
+> --- [Alan Levinovitz](https://twitter.com/AlanLevinovitz/status/1177977350006464512)
+]
+
+Also my own post: [The #1 Reason Why I Don't Want to Work in Academia](https://yihui.org/en/2017/12/formatting-papers/)
+
+---
+
+## No kidding: formatting is costly
+
+> "Our results suggest that scientific formatting represents a loss of 52 hours, costing the equivalent of US$1,908 per researcher per year."
+
+> --- LeBlanc et. al: [Scientific sinkhole: The pernicious price of formatting](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0223116)
+
+???
+
+To be fair, the industry can be worse.
+
+---
+
+## [The law of the hammer](https://en.wikipedia.org/wiki/Law_of_the_instrument)
+
+> If all you have is a hammer, everything looks like a nail.
+
+IMO this is the single cognitive bias that you should try your best to avoid when / after receiving college education (especially for PhD students).
+
+---
+
+### Yuval Harari: 21 Lessons for the 21st Century
+
+.smaller[
+> As we come to make the most important decision in the history of life, I personally would _trust more in those who admit ignorance than those who claim infallibility_. If you want your religion, ideology, or worldview to lead the world, my first question to you is: _"What was the biggest mistake your religion, ideology or worldview committed? What did it get wrong?"_ If you cannot come up with something serious, I for one would not trust you.
+]
+
+Example: Simon Raper -- [In my opinion… Bullshit jobs in statistics](https://rss.onlinelibrary.wiley.com/doi/10.1111/j.1740-9713.2019.01321.x)
+
+---
+
+## A question from Dr Bin Yu
+
+I attended a webinar by Dr Bin Yu (UC Berkeley) last week, in which she talked about her recent paper "[Three principles of data science: predictability, computability, and stability (PCS)](https://arxiv.org/abs/1901.08152)". She asked a question during the talk:
+
+.smaller[
+> If you are a statistician working on methods / models for developing medicine, would you try the medicine on your own kids if they are sick after the medicine is released and claims to cure the illness?
+]
+
+---
+
+## [Eating your own dog food](https://en.wikipedia.org/wiki/Eating_your_own_dog_food)
+
+If you believe in data-driven decisions, how many of your own decisions are made based on data? e.g.
+
+- Looking for an apartment or buying a house
+
+- Choosing an advisor
+
+- Choosing courses for the next semester
+
+- Determining your most productive hours
+
+- ...
+
+---
+
+## If we believe stat computing is an essential part of data science
+
+Why is STAT 579 _still_ the single least important course in this department? That is, it is the only one-credit course. This has been the case since I came here in 2009.
+
+And the number of PhD core theory courses was expanded from two to three (added STAT 641 in 2014 or 2015).
+
+---
+
+## Impact: depth or breadth, and how?
+
+I have a blog post: https://yihui.org/en/2018/08/influence-depth-or-breadth/
+
+One star? https://github.com/yaweige/ggpcp
+
+One post? https://fanne-stat.github.io/
+
+???
+
+It is a shame that so many talents are hidden in the corn fields...
+
+---
+class: center, middle
+
+# Thank you!
+
+## Contact: https://yihui.org
+
+## Slides: http://bit.ly/isu-talk
