@@ -51,6 +51,30 @@ for (result in list) {
 
 # 合并所有条件的数据框
 all <- multimerge(list)
+
+
+# 找出刺激可见
+V <- subset(all,stimuli%in%c('FPV','FUV','HPV','HUV'))
+# 用于比对条件和更改名称
+Vstim <- substr(V$stimuli,1,2)
+# 找出刺激不可见
+I <- subset(all,stimuli%in%c('FPI','FUI','HPI','HUI'))
+# 判断是否对应
+TF <- all.equal(V$position,I$position) & all.equal(V$condition,I$condition) & all.equal(Vstim,substr(I$stimuli,1,2))
+# 如果刺激的条件是对应的
+if (TF) {
+  # print("OK")
+  # 可见减去不可见
+  V[2:12] <- abs(V[2:12]-I[2:12])
+  # 更改刺激条件为相减
+  V$stimuli <- Vstim
+}
+
+
+# 合并相减的结果到总的数据框
+all <- multimerge(c("all","V"))
+
+
 # 去掉中间变量
 allobj <- ls()
 rm(list=allobj[which (allobj != "all")])

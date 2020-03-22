@@ -36,8 +36,9 @@ for (result in list) {
   position <- sapply(tempstr,"[",3)
   
   
-  # 计算Invisible和Visible条件的差值,bind
-  results <- cbind(results,abs(results[c(2,4,6,8)]-results[c(3,5,7,9)]))
+  # 计算Visible和Invisible条件的差值,bind
+  # 因为本身STS和FFA就是选择的Visible大于Invisible的
+  results <- cbind(results,results[c(3,5,7,9)]-results[c(2,4,6,8)])
   # bind条件和位置和valance
   results <- cbind(results,position)
     # 改变列名称

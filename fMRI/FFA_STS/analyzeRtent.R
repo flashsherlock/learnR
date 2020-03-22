@@ -45,8 +45,40 @@ for (result in list) {
 
 # 合并所有条件的数据框
 all <- multimerge(list)
+
+# 找出刺激可见
+STS <- subset(all,position=="aSTS" & stimuli%in%c('FPV','FUV','HPV','HUV'))
+FFA <- subset(all,position=="FFA" & stimuli%in%c('FPV','FUV','HPV','HUV'))
+# 用于比对条件和更改名称
+STSstim <- substr(STS$stimuli,1,2)
+FFAstim <- substr(FFA$stimuli,1,2)
+# 找出刺激不可见
+ISTS <- subset(all,position=="aSTS" & stimuli%in%c('FPI','FUI','HPI','HUI'))
+IFFA <- subset(all,position=="FFA" & stimuli%in%c('FPI','FUI','HPI','HUI'))
+
+# 如果刺激的条件是对应的
+if (all.equal(STSstim,substr(ISTS$stimuli,1,2))) {
+  # print("OK")
+  # 可见减去不可见
+  STS[2:12] <- STS[2:12]-ISTS[2:12]
+  # 更改刺激条件为相减
+  STS$stimuli <- STSstim
+}
+
+# 如果刺激的条件是对应的
+if (all.equal(FFAstim,substr(IFFA$stimuli,1,2))) {
+  # print("OK")
+  # 可见减去不可见
+  FFA[2:12] <- FFA[2:12]-IFFA[2:12]
+  # 更改刺激条件为相减
+  FFA$stimuli <- FFAstim
+}
+
+# 合并相减的结果到总的数据框
+all <- multimerge(c("all","STS","FFA"))
+
 # 去掉中间变量
 allobj <- ls()
 rm(list=allobj[which (allobj != "all")])
 rm(allobj)
-# save(all,file = "Alltent.RData")
+save(all,file = "Alltent.RData")
