@@ -76,9 +76,7 @@ sedata <- cbind(sedata,position)
 all <- multimerge(list)
 # 去掉中间变量
 allobj <- ls()
-rm(list=allobj[which (allobj != "all" &
-                      allobj != "sedata"&
-                      allobj != "meandata")])
+rm(list=allobj[which (allobj != "all")])
 rm(allobj)
 save(list = ls(),file = "All.RData")
 

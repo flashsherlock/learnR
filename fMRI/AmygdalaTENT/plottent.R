@@ -1,5 +1,5 @@
 rm(list = ls())
-load("All.RData")
+load("Alltent.RData")
 # 分组统计
 library(psych)
 analyze <- describeBy(all[2:14],list(all$position,all$condition),mat = TRUE)
@@ -29,7 +29,7 @@ ggthemr('fresh',layout = "clean")
 # 提取需要画图的部分
 FaceAmy <- subset(analyze,group1=="Amy" & group2%in%c("HF","FH") & vars%in%c('FP','FU','HP','HU'),select = c(mean,se,vars,group2))
 # Error bars represent standard error of the mean
-ggplot(FaceAmy, aes(x=vars, y=mean, fill=group2)) + 
+ggplot(FaceAmy, aes(x=vars, y=mean, fill=group2)) +
   coord_cartesian(ylim=c(0,0.4)) +  # 设置y轴坐标范围
   scale_y_continuous(expand = c(0,0))+
   geom_bar(position="dodge", stat="identity") +
