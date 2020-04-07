@@ -1,0 +1,291 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+```{r}
+knitr::opts_chunk$set(warning = F, message = F, cache = TRUE)
+```
+# Experiment 5
+```{r}
+rm(list=ls())
+#list packages
+packages= c("ggplot2", "plyr", "lme4", "reshape", "gridExtra")
+
+#load them
+packages<- lapply(packages, require, character.only= T)
+
+load("Exp 5 data.RData")
+
+head(data)
+```
+
+## Preprocessing
+```{r}
+data$Dist= as.factor(data$Dist)
+data$SubjNb= as.factor(data$SubjNb)
+# 去掉练习
+data= data[data$Phase=="experiment",]
+# 找时间合适的试次
+data$R_time= data$R_time - 20
+data$Valid= ifelse(data$Accur. == 1 & 
+                   data$R_time>100 & 
+                   data$R_time<500, 1, 0)
+
+# 正确率
+acc.m.s= tapply(data$Accur.,
+                list(data$SubjNb, data$Dist),
+                mean)
+#this averages across subjects (displayed)
+(acc.m= apply(acc.m.s, 2, mean))
+
+#this calculates the standard deviation between subjects
+acc.sd= apply(acc.m.s, 2, sd)
+
+#this divides the sd by the square root of subjects' N
+acc.sem= acc.sd/(sqrt(length(levels(data$SubjNb))))
+
+acc.an= data
+data= data[data$Valid==1,]
+
+# 反应时
+#centre variables
+for (i in 1:length(levels(data$SubjNb))){
+  data$R_time[data$SubjNb== i]= data$R_time[data$SubjNb== i]- 
+                              mean(data$R_time[data$SubjNb== i])
+}
+
+rts.m.s= tapply(data$R_time,
+                list(data$SubjNb, data$Dist),
+                mean)
+
+#this averages across subjects (displayed)
+(rts.m= apply(rts.m.s, 2, mean))
+
+#this calculates the standard deviation between subjects
+rts.sd= apply(rts.m.s, 2, sd)
+
+#this divides the sd by the square root of subjects' N
+rts.sem= rts.sd/(sqrt(length(levels(data$SubjNb))))
+
+```
+## Fit evaluation
+```{r}
+
+#formula for RMSE
+rmse <- function(error) {
+  sqrt(mean(error^2))}
+
+# And this is a custom plot to summarise various models fit:
+
+plot.fit= function(x, y, fit.model, main, xlim=NULL, plotSE=F, odds= F){
+  
+  pnts= tapply(y, x, mean)
+  
+  if (! is.null(fit.model)){
+    main=paste0(main, ", AIC= ", round(AIC(fit.model), 2), ", RMSE= ", round(rmse(resid(fit.model)), 2))
+    y.predicted={}
+    y.predicted= predict(fit.model, 
+                         newdata= list(x= seq(min(x), max(x), length=1000)))
+    
+    SE= tryCatch(summary(fit.model)$sigma, error= function(dummy){})
+    if (! is.numeric(SE))(SE<- 0.00001)
+    
+    if (plotSE){
+      if (is.null(xlim))
+        (xlim= c(min(range(y.predicted), min(pnts))-SE, max(range(y.predicted), max(pnts))+ SE))
+    } else {
+      xlim= c(min(range(y.predicted), min(pnts)), max(range(y.predicted), max(pnts)))
+    }
+  } else {xlim= c(min(pnts), max(pnts))}
+  
+  if(odds)(xlab= "Logit") else (xlab= "Coefficient (ms)")
+  
+  plot(as.numeric(as.character(names(pnts))) ~ pnts, 
+       cex.main=1.5, cex.axis=1.5, cex.lab=1.5, pch= 19, font= 2, font.lab= 2, 
+       main= main, ylab= "Depth (cm)", xlab= xlab,
+       ylim=c(0, 320), 
+       xlim= xlim)
+  
+  if (plotSE)(
+    polygon(y = c(seq(min(x), max(x), length= 1000),
+                  seq(max(x), min(x), length= 1000)),
+            x= c(y.predicted - SE, y.predicted[length(y.predicted):1] +SE),
+            col= adjustcolor("lightgray", alpha.f= 0.2), border= NA))
+  
+  
+  lines(x= c(0,0), y= range(x)+c(-10, 10), lty=2, col="darkgray")
+  
+  #fixation
+  lines(x= xlim, y= c(175,175), lty=2, col="darkgray")
+  text(xlim[1], y= 170, "Fixation", pos= 4)
+  
+  if (! is.null(fit.model)){
+    lines(y = seq(min(x), max(x), length=1000), x= y.predicted, lwd= 2)
+  
+  if (plotSE){
+    if (SE== 0.00001)
+      (text(x = xlim[1], y= 5, labels= "SE could not be obtained", pos= 4))}
+
+}}
+
+```
+## Mixed models
+```{r}
+# For accuracy:
+mod.acc=glmer(Accur. ~ Dist + (1+Dist|SubjNb), data=acc.an, family= binomial,
+           control=glmerControl(optimizer="bobyqa"))
+
+# We extract random slopes. Values are initially coded as adjustments with respect to the first value (intercept), so we need to reshape these values to obtain absolute indices:
+
+RS.acc.s= coef(mod.acc)$SubjNb
+RS.acc.s[,2:6]= RS.acc.s[,1]+RS.acc.s[,2:6]
+colnames(RS.acc.s)= as.character(seq(50, 300, by= 50))
+
+# The group average:
+
+(RS.acc.m= colMeans(RS.acc.s))
+
+# Results are in terms of odds to produce a correct response. Now for RTs.
+
+mod.rts=lmer(R_time ~ Dist + (1+Dist|SubjNb), data=data, 
+                      REML=F, control=lmerControl(optimizer="bobyqa"))
+RS.rts.s= coef(mod.rts)$SubjNb
+RS.rts.s[,2:6]= RS.rts.s[,1]+RS.rts.s[,2:6]
+colnames(RS.rts.s)= as.character(seq(50, 300, by= 50))
+(RS.rts.m= colMeans(RS.rts.s))
+```
+## Fit
+```{r}
+# For all computations the independent variable will be depth:
+x= seq(50, 300, by= 50)
+
+
+# to optimize our initial guess we need custom functions to be minimized accordingly
+# log
+log.min.fn= function(data, par) {
+  with(data, 
+       sum((par[[1]] + par[[2]]*log(x)  - y )^2))
+  
+}
+
+# exp 
+exp.min.fn=function(data, par) {
+  with(data, 
+       sum((par[[1]] + par[[2]]*exp(x/100) - y )^2))
+  
+}
+
+# sigmoidal
+sig.min.fn=function(data, par) {
+  with(data, 
+       sum((par[[1]] + ((par[[2]] - par[[1]])/(1 + exp(par[[3]] * (x - par[[4]]))))  - y )^2))
+  
+}
+
+# The linear trend needs no optimization as it is straigthforward. As you can see the sigmoidal curve (general form) needs 2 additional parameters in order to be described. This is why, beside the RMSE, we also ask for the Akaike Information Criterion, to control for potential overfitting of the data.
+
+# We can also declare a general fitting function:
+
+my_fitting_function= function(what){
+  
+  #initial error, to minimize across cycles
+  Error= Inf
+  
+  #choose appropriate guess matrix
+  GUESS= list(log= GUESS.log, exp= GUESS.exp, sig= GUESS.sig)[what][[1]]
+  
+  for (i in 1:nrow(GUESS)){
+  
+  #choose guess
+  starting= as.list(GUESS[i,])
+  
+  #choose minimize function, then optimize
+  minimize.function= list(log= log.min.fn, exp= exp.min.fn, sig= sig.min.fn)[what][[1]]
+  
+  optimized.values= optim(par= starting, minimize.function, data=data.frame(x= x, y= y),method= "SANN")$par
+  print(i)
+  print(starting)
+  print(optimized.values)
+  #fit the relevant curve
+  fit= {}
+  if(what=="log"){
+      fit= tryCatch(nls(y ~ a + b*log(x), start= GUESS[i,],
+               control = list(maxiter = 10^4, warnOnly= T), 
+               algorithm = "port"), error= function(dummy){})} 
+  
+  if(what=="exp"){
+      fit= tryCatch(nls(y ~ a + b*exp(x/100), start= GUESS[i,],
+             control = list(maxiter = 10^4, warnOnly= T), 
+             algorithm = "port"), error= function(dummy){})}
+  
+  if(what=="sig"){
+      fit= tryCatch(nls(y ~ a + ((b - a)/(1 + exp(c * (x - d)))), 
+                start= GUESS[i,],
+                control = list(maxiter = 10^4, warnOnly= T), 
+                algorithm = "port"), error= function(dummy){})}
+  
+  #check if model has been estimated, then if Error is less than previous model.
+  #retain model if successful
+  if(!is.null(fit)) {
+    if(rmse(resid(fit)) < Error) {Error= rmse(resid(fit)); final.fit= fit}
+    if(fit$convInfo$isConv) break;}
+  
+  }
+
+  return(final.fit)
+}
+```
+## RT
+```{r}
+# We declare in advance our guesses for initial parameters.
+
+GUESS.log= expand.grid(a= seq(-20, -10, 5), b= seq(5, 25, 5))
+
+GUESS.exp= expand.grid(a= seq(-20, -5, 5), b= seq(1, 10, 2))
+
+GUESS.sig= expand.grid(a= seq(-12, -5, 5), b= seq(21, 150, 30),
+                       c= seq(-0.02, -0.4, -0.05), d= seq(208, 300, 50))
+# The dependent variable is:
+
+y= RS.rts.m
+# Linear fit is very basic (same as lm).
+
+# linear fit
+lin.fit= nls(y ~ a+b*x, start= list(a= -30, b= -10),
+                control = list(maxiter = 500, warnOnly=T))
+# Trickier, the logaritmic trend:
+
+log.fit= my_fitting_function("log")
+# Now fit an exponential curve:
+
+exp.fit= my_fitting_function("exp")
+# And finally the sigmoid trend:
+
+sig.fit= my_fitting_function("sig")
+# Now a graphical depiction of all results:
+
+par(mfrow=c(2,2))
+plot.fit(x, y, lin.fit, "Linear")
+plot.fit(x, y, log.fit, "Log")
+plot.fit(x, y, exp.fit, "Exp")
+plot.fit(x, y, sig.fit, "Sigmoid")
+```
+```{r}
+DF= data.frame(x= x, y= y, sem= apply(RS.rts.s, 2, sd)/sqrt(length(levels(data$SubjNb))))
+#only for prediction purposes
+extra= data.frame(x= c(0, 350, 400), y= c(NA, NA, NA), sem= c(NA, NA, NA))
+
+coef.plot= function(x)(coef(sig.fit)[1] + ((coef(sig.fit)[2] - coef(sig.fit)[1])/(1 + exp(coef(sig.fit)[3] * (x - coef(sig.fit)[4])))))
+
+ggplot(DF, aes(x= x, y= y)) + scale_x_continuous(limits= c(0, 400), 
+                                                 breaks= seq(50, 300, by= 50), 
+                                                 labels=c("D1", "D2", "D3", "D4", "D5", "D6")) +
+  theme_bw() + theme(text= element_text(size=20, face="bold")) +
+  ylab("RTs Advantage (ms)") + xlab("Distance") +
+  stat_function(fun= coef.plot, color= "#007F7F", size= 1.2) +
+  geom_errorbar(aes(ymin= y-sem, ymax= y+sem), size= 1.5, width= .2, colour= "black") +
+  geom_point(size= 5, stroke= 2, shape= 21, color= "black", fill= "blue")  
+```
+

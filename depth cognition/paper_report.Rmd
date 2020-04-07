@@ -1,0 +1,344 @@
+---
+title: "Paper_report"
+author: "Elvio Blini GuFei"
+date: '2020-03-25'
+output:
+  html_document:
+    df_print: paged
+---
+```{r}
+knitr::opts_chunk$set(warning = F, message = F)
+```
+
+# Experiment 1-in a virtual environment
+
+We focus on accuracy and reaction times (RTs) for correct answers that were provided within 100-500 ms.
+
+For any request or inquiry don’t hesitate to contact: elvio.blini@gmail.com
+
+<!-- ## Preliminary setup -->
+<!-- As a first step, ensure to clean the current environment to avoid conflicts. You can do it with `rm(list=ls())` (also ensure that modifications are saved for future use). -->
+
+<!-- In order to run this script we need a few packages available on CRAN. You might need to install them first, e.g. by typing `install.packages("BayesFactor")` in the console. -->
+
+```{r}
+#list packages
+packages= c("ggplot2", "plyr", "BayesFactor", "lme4", "reshape", "gridExtra", "plot3D", "afex", "effsize","dplyr")
+
+#load them
+packages <- lapply(packages, require, character.only= T)
+
+# load data
+load("Exp 1 data.RData")
+head(data)
+```
+
+## Preprocessing
+The factors Distance (Dist) and Subject (SubjNb) are to be converted into factors. Accuracy (Accur.) is numeric instead.
+
+```{R}
+data$Dist= as.factor(data$Dist)
+data$SubjNb= as.factor(data$SubjNb)
+data$Accur.= as.numeric(as.character(data$Accur.))
+str(data)
+```
+Practice trials were removed.
+```{R}
+data= data[data$Phase=="experiment",]
+```
+The Oculus Rift has a fixed latency of 20 ms that we subtract from subjects’ reaction times. Note that this is a constant value and does not affect statistics afterwards.
+```{R}
+data$R_time= data$R_time - 20
+```
+A response was considered Valid if it was correct and provided within 100 and 500 ms. We create a variable equals to 1 if this condition is met.
+```{R}
+data$Valid= ifelse(data$Accur. == 1 & 
+                   data$R_time>100 & 
+                   data$R_time<500, 1, 0)
+```
+
+## Summarise accuracy
+正确率
+
+We are interested, for this part, in the role of distance (depth of the shape). We also manipulated the position of the non-dominant hand, that could be close to the body or at approximately 50 cm away.
+```{R}
+# tapply按照第二个参数进行分组同统计
+acc.m.s= tapply(data$Accur.,
+                list(data$SubjNb, data$Dist, data$H_Pos),
+                mean)
+```
+Then we obtain the grand average, sd, and sem.
+```{R}
+#this averages across subjects (displayed)
+(acc.m= apply(acc.m.s, c(2:3), mean))
+# print("SD")
+# sprintf("\n")
+cat("\nSD\n")
+#this calculates the standard deviation between subjects
+(acc.sd= apply(acc.m.s, c(2:3), sd))
+# 标准误
+#this divides the sd by the square root of subjects' N
+acc.sem= acc.sd/(sqrt(length(levels(data$SubjNb))))
+```
+
+去掉错误的和时间不在100-500的剩余比例
+What is the average percentage of trials omitted for both incorrect responses and slow RTs?
+```{R}
+val.m.s= tapply(data$Valid,
+                list(data$SubjNb, data$Dist, data$H_Pos),
+                mean)
+
+#this averages across subjects (displayed)
+(val.m= apply(val.m.s, c(2:3), mean))
+
+
+```
+
+```{R}
+# We now want to save the data frame as a separate object to run analyses over accuracy afterwards.
+acc.an= data
+# Indeed, we now exclude wrong (plus too slow or too fast) responses to further assess RTs.
+data= data[data$Valid==1,]
+```
+
+# Summarise RTs
+```{R}
+rts.m.s= tapply(data$R_time,
+                list(data$SubjNb, data$Dist, data$H_Pos),
+                mean)
+
+#this averages across subjects (displayed)
+(rts.m= apply(rts.m.s, c(2:3), mean))
+
+#this calculates the standard deviation between subjects
+rts.sd= apply(rts.m.s, c(2:3), sd)
+
+#this divides the sd by the square root of subjects' N
+rts.sem= rts.sd/(sqrt(length(levels(data$SubjNb))))
+```
+
+# Analyses - Mixed Models
+We now run statistics using (general) linear mixed-effects models.
+
+The general strategy is to evaluate beforehand the random effects that increase model fitting, as to reach a parsimonious solution (i.e. supported by data). We create several different (nested) models and evaluate them against a simpler reference one through likelihood ratio tests (LRT). This holds for both random and fixed effects testing.
+
+The simplest model to start with only includes the random intercept for Subjects (baseline level). We then start testing random slopes one by one, following this order:
+
+1. Distance
+2. Hand Position
+3. Color of the shape
+4. Shape (that is, correct answer)
+
+Each random slope - that informs about variability in performance across levels of a factor, e.g. differences in experimental manipulations across subjects - will be retained in the model if the LRT is proven significant. Following evaluations will be made with reference models that include this slope. For example, if Distance improves model fit as random slope, Hand Position will be evaluated against the model including it. As a second step we introduce interactions for all combinations of slopes proven significant (this is to respect marginality, and thus include high-order terms only together with their lower-order ones).
+
+Fixed effects testing will use a similar (type 2) approach.
+
+(To avoid verbosity, only the p value is shown).
+
+## Accuracy
+We start with the simplest model. Note that accuracy is binomial, thus we call for the general linear mixed effect regression (glmer) function and specify the family accordingly. I’m also asking for the “bobyqa” optimizer, which handles convergence problems very well.
+
+使用的是glmer，即广义的线性模型，需要指定family
+```{R}
+mod0=glmer(Accur. ~ (1|SubjNb), data=acc.an, family=binomial, 
+           control=glmerControl(optimizer="bobyqa"))
+cat("\nDistance\n")
+#random slope for distance
+mod0a=glmer(Accur. ~ (1+Dist|SubjNb), data=acc.an, family=binomial, 
+            control=glmerControl(optimizer="bobyqa"))
+
+#LRT
+anova(mod0, mod0a)$`Pr(>Chisq)`[2] #nope
+
+cat("\nHand position\n")
+#random slope for hand position
+mod0b=glmer(Accur. ~ (1+H_Pos|SubjNb), data=acc.an, family=binomial,
+            control=glmerControl(optimizer="bobyqa"))
+
+#LRT  
+anova(mod0, mod0b)$`Pr(>Chisq)`[2] #yes
+
+cat("\nColor\n")
+#slope for color
+mod0c=glmer(Accur. ~ (1+H_Pos+Color|SubjNb), data=acc.an, family=binomial,
+            control=glmerControl(optimizer="bobyqa"))
+
+anova(mod0b, mod0c)$`Pr(>Chisq)`[2]
+
+cat("\nShape of the stimulus\n")
+#slope for correct response
+mod0d=glmer(Accur. ~ (1+H_Pos+Correct.Answer|SubjNb), data=acc.an, family=binomial,
+            control=glmerControl(optimizer="bobyqa"))
+
+anova(mod0b, mod0d)$`Pr(>Chisq)`[2]
+
+# 有些问题，是因为颜色的虚拟变量相关太高
+isSingular(mod0c,tol = 1e-5)
+summary(mod0c)
+
+cat("\nInteraction of Hand and Shape\n")
+#interaction
+mod0e=glmer(Accur. ~ (1+H_Pos*Correct.Answer|SubjNb), data=acc.an, family=binomial,
+            control=glmerControl(optimizer="bobyqa"))
+  
+anova(mod0d, mod0e)$`Pr(>Chisq)`[2]
+
+# 确定最后的模型
+mod.null= mod0d
+
+```
+正式开始检验固定效应，被试是随机因子，模型中+表示两个的主效应，*表示主效应和交互作用，:表示只是交互作用
+
+```{R}
+
+cat("\n距离对正确率不显著\n")
+# 距离对正确率不显著
+#distance as fixed effect
+mod1=glmer(Accur. ~ Dist+ (1+H_Pos+Correct.Answer|SubjNb), data=acc.an, family=binomial,
+           control=glmerControl(optimizer="bobyqa"))
+
+anova(mod.null, mod1)
+
+
+cat("\n手的位置对正确率不显著\n")
+#hand position as fixed effect
+mod2=glmer(Accur. ~ H_Pos+ (1+H_Pos+Correct.Answer|SubjNb), data=acc.an, family=binomial,
+           control=glmerControl(optimizer="bobyqa"))
+
+#LRTs
+anova(mod.null, mod2)
+
+# 交互作用对正确率不显著
+mod3=glmer(Accur. ~ Dist+H_Pos+ (1+H_Pos+Correct.Answer|SubjNb), data=acc.an, family=binomial,
+           control=glmerControl(optimizer="bobyqa"))
+mod4=glmer(Accur. ~ Dist*H_Pos+ (1+H_Pos+Correct.Answer|SubjNb), data=acc.an, family=binomial,
+           control=glmerControl(optimizer="bobyqa"))
+
+#LRT
+anova(mod3, mod4)
+```
+
+## Reaction times
+We use the same selection procedure as above. For random effects we use restricted maximum likelihood (REML, that works well when fixed effects in the to-be-compared models are exactly the same). We’ll need to prevent the LRT to refit models. Here’s the simplest model.
+```{r}
+rtmod0=lmer(R_time ~ (1|SubjNb), data=data, REML=T,
+            control=lmerControl(optimizer="bobyqa"))
+cat("\n距离\n")
+rtmod0a=lmer(R_time ~ (1+Dist|SubjNb), data=data, REML=T, 
+             control=lmerControl(optimizer="bobyqa"))
+  
+anova(rtmod0, rtmod0a, refit=F)$`Pr(>Chisq)`[2] #significant, keep it in
+cat("\n增加位置\n")
+rtmod0b=lmer(R_time ~ (1+Dist+H_Pos|SubjNb), data=data,  REML=T,
+             control=lmerControl(optimizer="bobyqa"))
+  
+anova(rtmod0a, rtmod0b, refit=F)$`Pr(>Chisq)`[2] #significant, keep it in
+cat("\n增加颜色\n")
+rtmod0c=lmer(R_time ~ (1+Dist+H_Pos+Color|SubjNb), data=data, REML=T, 
+             control=lmerControl(optimizer="bobyqa"))
+
+
+anova(rtmod0b, rtmod0c, refit=F)$`Pr(>Chisq)`[2] #nope 
+
+cat("\n增加形状（应该按的键）\n")
+rtmod0d=lmer(R_time ~ (1+Dist+H_Pos+Correct.Answer|SubjNb), data=data, REML=T, 
+             control=lmerControl(optimizer="bobyqa"))
+  
+anova(rtmod0b, rtmod0d, refit=F)$`Pr(>Chisq)`[2] #significant, keep it in
+cat("\n增加两两之间的交互\n")
+rtmod0e=lmer(R_time ~ (1+Dist*H_Pos+Correct.Answer|SubjNb), data=data, REML=T, 
+             control=lmerControl(optimizer="bobyqa"))
+
+anova(rtmod0d, rtmod0e, refit=F)$`Pr(>Chisq)`[2] 
+
+rtmod0f=lmer(R_time ~ (1+Dist+H_Pos*Correct.Answer|SubjNb), data=data, REML=T, 
+             control=lmerControl(optimizer="bobyqa"))
+
+anova(rtmod0d, rtmod0f, refit=F)$`Pr(>Chisq)`[2] 
+
+rtmod0g=lmer(R_time ~ (1+H_Pos+Dist*Correct.Answer|SubjNb), data=data, REML=T, 
+             control=lmerControl(optimizer="bobyqa"))
+  
+anova(rtmod0d, rtmod0g, refit=F)$`Pr(>Chisq)`[2] #yes 
+
+rtmod.null= rtmod0g
+rtmod.null= update(rtmod.null, REML=F)
+
+```
+
+开始检验固定效应I’m still writing models manually, avoiding update for clarity reasons. Another possibility is using afex::mixed, which is a wrapper around lmer useful when fixed factors are many.
+
+```{r cache=TRUE}
+cat("\n距离的主效应，和只有随机效应的比较\n")
+rtmod1=lmer(R_time ~ Dist+ (1+H_Pos+Dist*Correct.Answer|SubjNb), data=data, REML=F,
+            control=lmerControl(optimizer="bobyqa"))
+anova(rtmod.null, rtmod1)
+
+cat("\n手位置的主效应，和只有随机效应的比较\n")
+rtmod2=lmer(R_time ~ H_Pos+ (1+H_Pos+Dist*Correct.Answer|SubjNb), data=data, REML=F,
+            control=lmerControl(optimizer="bobyqa"))
+
+anova(rtmod.null, rtmod2)
+
+cat("\n交互作用，和只有主效应的比较\n")
+rtmod3=lmer(R_time ~ Dist+H_Pos + (1+H_Pos+Dist*Correct.Answer|SubjNb), data=data, REML=F,
+            control=lmerControl(optimizer="bobyqa"))
+rtmod4=lmer(R_time ~ Dist*H_Pos + (1+H_Pos+Dist*Correct.Answer|SubjNb), data=data, REML=F,
+            control=lmerControl(optimizer="bobyqa"))
+  
+anova(rtmod3, rtmod4)
+cat("最终的模型，固定效应的估计是β，对应的显著性不是主效应")
+summary(rtmod1)
+cat("通过bootstrap得到置信区间")
+set.seed(1)
+(ci= confint(rtmod1, method="boot", nsim=500, parm= 18))
+```
+
+```{r}
+cat("距离效应的Cohen's d")
+X= apply(rts.m.s, 1:2, mean)
+
+cohen.d(X[,2], X[,1], conf.level = 0.95,
+                 hedges.correction = FALSE, paired= T)
+
+cat("位置效应的Cohen's d")
+X= apply(rts.m.s, c(1, 3), mean)
+
+cohen.d(X[,2], X[,1], conf.level = 0.95,
+                 hedges.correction = FALSE, paired= T)
+```
+
+# Robustness checks
+Mixed models有很多设置的自由，怎么设置参数有一些tricky，Barr建议把随机效应都放进去，但会有不收敛和singular matrix的问题，所以他们自己建立了一套方法，同时这里用方差分析的方法进行了验证
+
+## ANOVA
+```{r}
+
+DF= ddply(data, c("SubjNb", "Dist", "H_Pos"), summarise, dv= mean(R_time))
+
+AOV= summary(aov_ez(id= "SubjNb", dv= "dv", within= c("Dist", "H_Pos"), data= DF))
+AOV
+
+#partial eta square
+#can also be seen with:
+#DescTools::EtaSq(aov_ez(id= "SubjNb", dv= "dv", within= c("Dist", "H_Pos"), data= DF, return= "aov"), type=1)
+AOV$univariate.tests[,1]/(AOV$univariate.tests[,1] + AOV$univariate.tests[,3])
+```
+
+## Bayesian ANOVA
+Second, we perform a Bayesian ANOVA, useful to provide evidence for the lack of Hand Position effect. We use objective priors to avoid a few degrees of freedom (results partly depend on prior choice). This is possible thanks to the BayesFactor package. A Bayes Factor > 1 supports the alternative hypothesis, the null if < 1.
+```{r}
+BF= anovaBF(dv ~ Dist*H_Pos + SubjNb, data= DF, whichRandom= "SubjNb")
+sort(BF, decreasing= T)
+
+BF[4]/BF[3]
+```
+
+## t-test
+```{r}
+DF= ddply(DF, c("SubjNb", "Dist"), summarise, dv= mean(dv))
+
+t.test(x= DF$dv[DF$Dist== "3"], 
+       y= DF$dv[DF$Dist== "0.5"], paired= TRUE)
+```
+
