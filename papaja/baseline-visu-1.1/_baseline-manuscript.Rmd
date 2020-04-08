@@ -1,0 +1,1176 @@
+---
+title             : "Visualisation and network analysis of physical activity and its determinants: Demonstrating opportunities in analysing baseline associations in the Let's Move It trial"
+shorttitle        : "Visualisation and network analysis in PA and SB"
+author: 
+  - name          : "Matti T. J. Heino"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    email         : "matti.tj.heino@gmail.com"
+    address       : "Faculty of Social Sciences, University of Helsinki, PO Box 54, 00014 University of Helsinki, Finland"
+  - name          : "Eiko Fried"
+    affiliation   : "2"
+    email         : "eiko.fried@gmail.com"
+  - name          : "Reijo Sund"
+    affiliation   : "3"
+    email         : "reijo.sund@uef.fi"
+  - name          : "Ari Haukkala"
+    affiliation   : "1"
+    email         : "ari.haukkala@helsinki.fi"
+  - name          : "Keegan Knittle"
+    affiliation   : "1"
+    email         : "keegan.knittle@helsinki.fi"
+  - name          : "Katja Borodulin"
+    affiliation   : "1" 
+    email         : "katja.borodulin@thl.fi"
+  - name          : "Antti Uutela"
+    affiliation   : "1" 
+    email         : "antti.uutela@gmail.com"
+  - name          : "Vera Araujo-Soares"
+    affiliation   : "4"        
+    email         : "vera.araujo-soares@ncl.ac.uk"
+  - name          : "Tommi Vasankari"
+    affiliation   : "5"        
+    email         : "tommi.vasankari@uta.fi"
+  - name          : "Nelli Hankonen"
+    affiliation   : "1"
+    email         : "nelli.hankonen@helsinki.fi"
+affiliation:
+  - id            : "1"
+    institution   : "Faculty of Social Sciences, University of Helsinki, PO Box 54, 00014 University of Helsinki, Finland"
+  - id            : "2"
+    institution   : "Department of Clinical Psychology, Leiden University, Wassenaarseweg 52, 2333 AK, Leiden, The Netherlands"
+  - id            : "3"
+    institution   : "Faculty of Health Sciences, University of Eastern Finland, PO Box 1627, 70211 Kuopio, Finland"
+  - id            : "4"
+    institution   : "Institute of Health and Society, Medical Faculty, Newcastle University, Baddiley-Clarke Building, Richardson Road NE2 4AX, United Kindom"
+  - id            : "5"
+    institution   : "UKK institute for Health Promotion Research, Kaupinpuistonkatu 1, 33500 Tampere, Finland"
+note              : "Trial Registration Number: ISRCTN10979479. Registered retrospectively: 31.12.2015." # "Preprint submitted for publication"
+abstract: | 
+  Background: Let's Move It is a complex whole-school system intervention aiming to reduce sedentary behaviours (SB) and increase physical activity (PA) among adolescents in vocational schools, by targeting their environmental and psychosocial determinants. This paper describes participants' baseline characteristics in a cluster-randomised trial testing the Let's Move It intervention, and explores possibilities for visual data presentation, making use of recent developments in software and network analyses. We provide an example of a comprehensive research report with all analysis code and results in a readily accessible format, allowing other researchers to apply these tools to their own data. 
+
+  Methods: At baseline, 1166 adolescents in 57 classes at 6 school clusters, distributed across four educational tracks, participated the study. We measured PA and SB (with 7-day accelerometry), psychological and social constructs hypothesised to affect the intervention's effects on outcomes (with questionnaires), and body composition (with bioimpedance measurement). Data were visualised using various techniques, e.g., combining ridge plots and diamond plots. Network analysis was used to explore relations between psychological/social variables and outcomes. 
+
+  Results: Participants' mean age was 18.5 (Median = 18.0) years. On average, participants engaged in moderate-to-vigorous daily PA for 1h 5min	(CI95: 0h 57min - 1h 13min), SB for 8h 44min	(CI95: 8h 4min - 9h 24min), and interrupted their sitting 25.8 times (CI95: 23.5 - 28.0) per day on average. Cluster randomisation appeared to result in balanced distributions for baseline characteristics between intervention and control groups, but differences emerged across the four educational tracks. Self-reported behaviour change technique (BCT) use was low for many but not all techniques. A network analysis revealed direct relationships between PA and behavioural experiments, planning and autonomous motivation. Several BCTs were connected to PA via autonomous motivation. 
+
+  Conclusions: Data-visualisation and data exploration techniques (e.g. network analysis) can help reveal the dynamics involved in complex multi-causal systems -- a challenging task with traditional data presentations. The benefits of presenting complex data visually should encourage researchers to publish extensive analyses and descriptions as website supplements, which would increase the speed and quality of scientific communication, as well as help to address the crisis of reduced confidence in research findings.
+
+keywords: "Exercise, physical activity, school-based intervention, behaviour change, sedentary behaviour"
+linenumbers       : yes
+figsintext        : yes
+floatsintext      : yes
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+lineno            : yes
+mask              : no
+csl               : apa.csl # https://tinyurl.com/apa6-no-disambiguation
+bibliography      : ["baseline-visu.bib", "r-and-packages.bib"]
+lang              : "en-GB"
+documentclass     : "apa6"
+classoption       : "man"  # man / doc / jou (& other comma separated options)
+output: 
+  papaja::apa6_pdf: default
+header-includes:
+  - \usepackage{setspace}
+  - \AtBeginEnvironment{tabular}{\singlespacing}
+  - \AtBeginEnvironment{lltable}{\singlespacing}
+  - \AtBeginEnvironment{tablenotes}{\doublespacing}
+  - \captionsetup[table]{font={stretch=1.5}}
+  - \captionsetup[figure]{font={stretch=1.5}}
+---
+
+```{r load-data, include = FALSE}
+
+source("baseline-datasetup.R")
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE, 
+               warning = FALSE,
+               message = FALSE,
+               error = TRUE,
+               cache = FALSE, 
+               collapse = TRUE,
+               dpi = 300
+               )
+
+# rmarkdown::render(input = "_baseline-manuscript.Rmd", output_format = "papaja::apa6_word", encoding = "UTF-8") 
+# citr::tidy_bib_file(rmd_file = "_baseline-manuscript.Rmd", messy_bibliography = "baseline-visu.bib")
+```
+
+\newpage
+
+# Background
+
+Declining physical activity (PA) and increasing sedentary behaviour (SB) are costly and growing concerns for public health, especially among individuals with low socioeconomic status (SES) [@elgarSocioeconomicInequalitiesAdolescent2015; @dielemanTrendsFutureHealth2018]. Patterns of low PA among adults begin earlier in the life course, with evidence that declines in PA and increases in SB begin during childhood and adolescence [@husuObjectivelyMeasuredSedentary2016; @makelaPhysicalActivityScreen2016]. This highlights the need for further research into interventions to improve PA and SB among adolescents.
+
+As adolescents spend a significant amount of their time in schools, the school setting provides valuable opportunities for PA and SB interventions [@vansluijsPhysicalActivityDietary2008]. The Let's Move It  intervention aimed to reduce SB and increase PA among adolescents in vocational schools, and was developed using stakeholder input and co-creation with target group representatives, as well as theories and empirical evidence from behavioural science [@hankonenWhatExplainsSocioeconomic2017a; @hynynenSystematicReviewSchoolbased2016]. Contrary to typical school-based interventions with relatively homogeneous participants, this trial was carried out in vocational schools with distinct and varied educational tracks (i.e. practical nurse, business information and communication technology, business administration, and hotel, restaurant and catering). Understanding the implications of these distinct tracks on the way participants engage in both PA and SB will support a better understanding of the individual and contextual determinants of behaviour and more informed interpretations of the results obtained in the trial.
+
+The hypothesised programme theories [@mooreProcessEvaluationComplex2015; @rogersUsingProgrammeTheory2008a] for changing PA and SB differed from one another. In order to increase PA, one needs to make a conscious effort and implement self-regulatory skills (e.g. action planning and overcoming barriers to PA) to make optimal use of opportunities. The Let's Move it intervention places a particular emphasis on helping adolescents understand and use techniques to manage their motivation and behaviour (see also @hankonenRandomisedControlledFeasibility2017 and @hankonenParticipantsEnactmentBehavior2018). To date, there is little knowledge about how the use of these techniques links to each other, and it would be important to examine these links empirically. The theoretical model for changing SB, on the other hand, is more driven by environmental opportunities, such as having the option to stand up during class.
+
+In order to increase moderate-to-vigorous-intensity PA, the Let's Move It intervention targeted several behavioural determinants, including behavioural beliefs (outcome expectations, descriptive norms, intention, self-efficacy/perceived behavioural control), autonomous and controlled motivation, environmental opportunities, action and coping planning, and behaviour change technique (BCT) use. Key hypotheses regarding students' PA change have been registered in OSF (https://osf.io/tb8fu/). To reduce total SB and introduce breaks in SB, the programme aimed to change the school environment by training teachers in the use of active teaching techniques and altering physical choice architecture in classrooms [@koykkaCombiningReasonedAction2018]. The intervention also included poster campaigns in schools, a website, and materials to target community actors and parents [@koykkaCombiningReasonedAction2018]. More information of the content of the intervention and the development of it is reported elsewhere [@hankonenRandomisedControlledFeasibility2017; @hankonenLetMoveIt2016; @hankonenChangingActivityBehaviours2019]. 
+
+It has long been a standard recommendation for quantitative analyses to investigate data visually as a core precursor of conducting statistical analyses [@clevelandVisualizingData1993; @tukeyExploratoryDataAnalysis1977]. However, in social and life sciences, such visualisations are rarely shared in publications. Information about data are usually limited to means and standard deviations, which presents at best limited information about the variables of interest [@trafimowMeansStandardDeviations2018]. Medians, modes, skewness and kurtosis provide helpful additional information, but human cognition places limits on evaluating these statistics simultaneously, especially when comparing groups of observations. For example, two distributions can have different means but the same mode, different modes but the same mean, or the same mean and standard deviation but a meaningful skew. Summary statistics conventionally calculated from the data leave important distributional properties uncovered, as illustrated in recent discussions on the inadequacy of bar plots [@saxonBarCharts2015; @weissgerberBarLineGraphs2015; @weissgerberStaticInteractiveTransforming2016].
+
+Data visualisations are crucial supplements to large numerical tables of descriptive statistics [@tayGraphicalDescriptivesWay2016]. With visualisations, researchers can communicate large amounts of information -- including the associated uncertainty -- in an accessible format, without requiring extensive mathematical expertise from the reader. This is important for researchers who intend to build on previous results [@chalmersAvoidableWasteProduction2009]. Such practices may reduce problems that have led to the recent loss of confidence in the reproducibility and replicability of research findings [@gigerenzerStatisticalRitualsReplication2018; @kepesHowTrustworthyScientific2013; @nosekPreregistrationRevolution2018; @nosekScientificUtopiaII2012a; @simmonsFalsePositivePsychologyUndisclosed2011a; @smaldinoNaturalSelectionBad2016]. Fully open data sharing would be ideal, but this is not always possible due to privacy concerns [@expertadvisorygroupondataaccessEAGDAReportGovernance2015] and, at the time of writing, remains a lamentably rare practice [@vanpaemelAreWeWasting2015]. In addition, open data does not necessarily accommodate stakeholders with low technical expertise in data analysis and visualisation, such as clinicians, patients and policy makers; see @hallgrenPathDiagramsEnhancing2018, p. 2.
+
+Three recent developments give impetus to a new approach. First, many journals now allow publication of supplementary online materials, which circumvents both word and figure restrictions of traditional manuscripts. Second, statistical software such as R [@rcoreteamLanguageEnvironmentStatistical2015] has recently become increasingly mainstream among applied researchers, with many free tutorials available online, opening the door for a variety of data visualisation techniques. Third, novel statistical methods in social and health psychology, such as psychological network analysis, may help to understand relationships between variables by making better use of visual representations of associations.
+
+The aims of this paper are to describe central characteristics of the Let's Move It trial baseline cohort, focusing on co-primary outcomes and other activity measures (as measured by accelerometry) of the trial both arms, genders and educational tracks in both trial arms. A further aim is to describe psychological and social correlates, as well as hypothesised determinants of the intervention's effect on moderate-to-vigorous PA (MVPA), with detailed visualisations of the dataset provided in an extensive supplementary website. As a sub-aim, we also investigate the network of relationships between MVPA, quality of motivation and BCT use at baseline. We provide all code as open source scripts, so that other researchers can use those scripts as templates to visualise their own datasets in a format that requires no special skills or tools to view.
+
+## Disclosures 
+
+### Preregistration 
+
+Trial Registration Number: ISRCTN10979479. Registered retrospectively: 31.12.2015.
+
+### Data, materials, and online resources
+
+The analysis data will be available at https://osf.io/jn9ax/ after the anonymisation process has been completed in August 2019. All analyses and code are available at https://git.io/fNHuf (permalink at @heinoSourceCodeVisualisation2019, GitHub repository at https://git.io/fjIQ6). The electronic questionnaire form is available at https://git.io/fjIP5.
+
+### Reporting 
+
+We report all data exclusions, all manipulations, and all measures in the study. Sample size determination is reported in Hankonen et al. [-@hankonenLetMoveIt2016]. 
+
+### Ethical approval
+
+The research proposal was reviewed by the Ethics Committee for Gynaecology and Obstetrics, Pediatrics and Psychiatry of the Hospital District of Helsinki and Uusimaa (decision number 367/13/03/03/2014).
+
+# Methods
+
+This study analyses baseline data from a cluster-randomised controlled trial testing Let's Move It, a complex whole-school system multi-level intervention conducted in Finnish vocational schools. Details of the Let's Move It trial have been described in the study protocol [@hankonenLetMoveIt2016]. At baseline, consenting participants in both intervention and control groups answered an electronic survey, underwent bioimpedance measurements and were instructed to wear an accelerometer for seven consecutive days. The baseline data collection started in January 2015 and ended in April 2016. 
+
+Six school units were included in the study. There were four educational tracks in the schools from which students were recruited: 1. Practical Nurse (Nur), 2. Hotel, Restaurant and Catering (HRC), 3. Business and Administration (BA), and 4. Information and Communications Technology (IT). Schools were paired so that there would be matching numbers of students from each educational track for both members of the pair. Blinded randomisation by a statistician was then conducted so that a random member of each pair was selected as intervention school, the other as control school (details reported in @hankonenLetMoveIt2016). Student participants provided informed consent and were blind to allocation at baseline.
+
+All conducted analyses and visualisations with accompanying code, can be found in the supplementary website at https://git.io/fNHuf (permalink at @heinoSourceCodeVisualisation2019), previously piloted in [@heinoSimpleRationaleprovidingSMS2018]. Source code to reproduce this manuscript (written with the R package `papaja` [@austPapajaPreparingAPA2019]), and all its figures can be found at https://git.io/fptcC.
+
+## Measures
+
+The measures are presented briefly, as they have been previously described in @hankonenLetMoveIt2016, and all individual items of the scales are available in the supplementary website (see section https://git.io/fjfLw).
+
+### Primary outcome variables of the trial
+
+In the LMI trial, there were multiple primary outcomes. The primary outcome for PA was moderate to vigorous PA (MVPA), measured by accelerometry and self-reports. Primary outcomes for sedentary behaviour (SB) were measured by accelerometry; they included time spent sitting or lying down, and the number of times sitting was interrupted during the day.
+
+*Self-reported MVPA.* Self-reported MVPA was measured with two questions in accordance with the NordPAQ measurement [@fagtNordicMonitoringDiet2012]. The first question asked participants about the number of days during the last week in which they did more than 30 minutes of MVPA, the other probed the overall amount of MVPA (in hours) during the past seven days. 
+
+*Accelerometer-measured MVPA and SB.* No more than seven days after responding to the questionnaire, students were given an accelerometer to be worn on seven consecutive days. The hip-worn accelerometer (Hookie AM 20, Traxmeet Ltd, Espoo, Finland) using a digital triaxial acceleration sensor (ADXL345; Analog Devices, Norwood MA) was attached to a flexible belt and participants were instructed to wear the belt around their right hip for seven consecutive days during waking hours, except during shower and other water activities. The acceleration signal was collected at 100 Hz sampling frequency, $\pm$ 16 g acceleration range and 0.004 g resolution. Definitions of the parameters are described in detail in the supplementary website (section https://git.io/fjJNi).
+
+### Theoretical predictors of PA
+
+The determinants postulated by the program theory included behavioural beliefs (outcome expectations, descriptive norms, intention, self-efficacy/perceived behavioural control), autonomous and controlled motivation, opportunities, action- and coping planning, and behaviour change technique (BCT) use. Participants were allowed to skip questions, and scales were computed as means of all items where responses were available. In other words, answering a single item of a specific scale sufficed. All items, response options, and descriptive statistics of scales are available in the supplementary website (section https://git.io/fAj0e); made using R package `codebook` [@arslanHowAutomaticallyDocument] for automatic dataset documentation.
+
+## Statistical analysis
+
+We used RStudio [@rstudioteamRStudioIntegratedDevelopment2015] 1.1.456 running `r papaja::cite_r("r-and-packages.bib", withhold = FALSE)` for all our analyses and figures.
+
+In our case (no confirmatory hypotheses), confidence intervals are more appropriate to report than p-values, as they provide readily interpretable values on the same scale as the original variable, accommodating inferences of practical relevance [@gardnerConfidenceIntervalsRather1986; @nosekPreregistrationRevolution2018; @sterneSiftingEvidenceWhat2001; @wassersteinASAStatementPValues2016]. Hence, we omit explicit statistical testing from the tables.
+
+Activity data was explored by utilising 100% stacked bar charts, which are useful when comparing proportions which add to 100%. MVPA data was, in addition, examined with augmented raincloud ridge plots to unveil distributional properties. Psychological and social determinants were examined with diamond plots [@petersDiamondPlotsTutorial2018], and heuristic effect sizes between means of intervention arms and genders transformed from Cohen's d to Pearson's r. Distributions of BCT use were examined with histograms.      
+
+Psychological network analysis was used to estimate and visualise relations among BCT use, motivation and MVPA. Such networks contain nodes (variables) and edges (statistical relationships between variables). Unlike in social network analysis, the connections are not directly observed, but are estimated. We used network models that estimate conditional dependence relations among a set of variables, which can be interpreted similarly to partial correlations. An edge between two variables implies that they are related after controlling for all other variables; the absence of an edge implies that the two variables are (conditionally) independent. 
+  
+The Mixed Graphical Model uses regularisation, a procedure that has been shown to help recover the true network structure in data in case the data were simulated under a network model [@haslbeckStructureEstimationMixed2015]. Regularisation has the goal to avoid estimating spurious relationships among items (i.e. false positive relations), and results in a parsimonious network structure. The regularisation technique used here is the Least Absolute Shrinkage and Selection Operator (LASSO; @tibshiraniRegressionShrinkageSelection1996), which shrinks all edges and sets very small edges to exact zero. A paper that explains LASSO regularisation in network models in detail can be found elsewhere [@epskampTutorialRegularizedPartial2018].
+
+Network models applied to between-subjects data at one time-point can be useful for describing health psychological data, as well as facilitating group-level hypothesis generation regarding which parts of the system are central for a problem at hand [@friedMovingForwardChallenges2017]. Identifying these determinants of importance can thus supplement traditional structural equation modeling (SEM) approaches. Network analysis has recently been taken up in many fields such as social psychology [@dalegeFormalizedAccountAttitudes2016; @dalegeNetworkStructureExplains2017], personality [@mottusWhyTraitsCome2017], intelligence [@vandermaasNetworkModelsCognitive2017a], psychopathology [@friedMentalDisordersNetworks2017a], and empathy research [@brigantiNetworkAnalysisEmpathy2018], and is beginning to be applied for health behaviours on a broader scale. Several helpful tutorial papers aimed at empirical researchers are available [@dalegeNetworkAnalysisAttitudes2017; @epskampTutorialRegularizedPartial2018; @epskampEstimatingPsychologicalNetworks2018; @costantiniStateARtPersonality2015; @costantiniStabilityVariabilityPersonality2017], and also exist for health psychology context in particular [@heveyNetworkAnalysisBrief2018].
+
+To ease interpretation of the network analysis, we dichotomised the heavily skewed controlled motivation variable in such a way that 1 represents answers 3 ("partly true for me") or higher, and 0 the rest. In addition, BCT use variables were dichotomised by giving 0 if a person reports completely disagreeing with their statements, or never having used the technique, and 1 otherwise. A correlation matrix of the variables can be found in the supplement (https://git.io/fhAgk).
+
+# Findings
+
+```{r demographics-load, echo = FALSE}
+
+load("./data/demographics.Rdata")
+load("./Rdata_files/demotable.Rdata")
+load("./Rdata_files/ci_girls.Rdata")
+load("./Rdata_files/ci_boys.Rdata")
+
+text_bornInFinland <- demographics %>% dplyr::summarise(mean(bornInFinland, na.rm = TRUE)) %>% 
+  dplyr::pull(.) %>% round(., 3) %>% scales::percent()
+text_girlPercentage <- demographics %>% dplyr::summarise(mean(girl, na.rm = TRUE)) %>% 
+  dplyr::pull(.) %>% round(., 3) %>% scales::percent()
+text_boyPercentage <- demographics %>% dplyr::summarise(1 - mean(girl, na.rm = TRUE)) %>% 
+  dplyr::pull(.) %>% round(., 3) %>% scales::percent()
+
+text_girlPercentageNursing <- demographics %>% group_by(Track) %>% dplyr::summarise(mean(girl, na.rm = TRUE)) %>% filter(Track == "Nur") %>% 
+  dplyr::pull(.) %>% round(., 3) %>% scales::percent()
+text_girlPercentageIT <- demographics %>% group_by(Track) %>% dplyr::summarise(mean(girl, na.rm = TRUE)) %>% filter(Track == "IT") %>% 
+  dplyr::pull(.) %>% round(., 3) %>% scales::percent()
+
+text_agerangeLow <- demographics %>% dplyr::summarise(range(age, na.rm = TRUE)[1]) %>% dplyr::pull(.)
+text_agerangeHigh <- demographics %>% dplyr::summarise(range(age, na.rm = TRUE)[2]) %>% dplyr::pull(.)
+text_ageMean <- demographics %>% dplyr::summarise(mean(age, na.rm = TRUE)) %>% dplyr::pull(.) %>% round(., 1) 
+text_over20yrOlds <- demographics %>% filter(age >= 20) %>% tally() %>% dplyr::pull(.)
+text_all <- demographics %>% tally() %>% dplyr::pull(.)
+text_percent_over20yrOlds <- (text_over20yrOlds / text_all) %>% round(., digits = 2) * 100
+
+# Ethnicity: intervention arm
+text_bornInFinland_intervention_percentage <- demographics %>% 
+  dplyr::filter(intervention == 1) %>% 
+  dplyr::summarise(mean(bornInFinland, na.rm = TRUE)) %>% 
+  dplyr::pull(.) %>% round(., 3) %>% scales::percent()
+
+text_intervention_total_n <- demographics %>% 
+  dplyr::filter(intervention == 1) %>% 
+  dplyr::summarise(n = n()) %>% dplyr::pull(.)
+
+text_bornInFinland_intervention_total_answers <- demographics %>% 
+  dplyr::filter(intervention == 1, !is.na(bornInFinland)) %>% 
+  dplyr::summarise(n = n()) %>% dplyr::pull(.)
+
+text_bornInFinland_intervention_n <- demographics %>% 
+  dplyr::filter(intervention == 1, bornInFinland == 1) %>% 
+  dplyr::summarise(n = n()) %>% dplyr::pull()
+
+# Ethnicity: control arm
+text_bornInFinland_control_percentage <- demographics %>% 
+  dplyr::filter(intervention == 0) %>% 
+  dplyr::summarise(mean(bornInFinland, na.rm = TRUE)) %>% 
+  dplyr::pull(.) %>% round(., 3) %>% scales::percent()
+
+text_control_total_n <- demographics %>% 
+  dplyr::filter(intervention == 0) %>% 
+  dplyr::summarise(n = n()) %>% dplyr::pull(.)
+
+text_bornInFinland_control_total_answers <- demographics %>% 
+  dplyr::filter(intervention == 0, !is.na(bornInFinland)) %>% 
+  dplyr::summarise(n = n()) %>% dplyr::pull(.)
+
+text_bornInFinland_control_n <- demographics %>% 
+  dplyr::filter(intervention == 0, bornInFinland == 1) %>% 
+  dplyr::summarise(n = n()) %>% dplyr::pull()
+
+```
+
+In this section, we first present data in traditional numeric tables, and follow up by augmenting them with graphical illustrations. Table \@ref(tab:demographics-table) shows the main demographic variables of the cohort by educational track. Among `r text_intervention_total_n` intervention arm participants, `r text_bornInFinland_intervention_percentage` (`r text_bornInFinland_intervention_n`/`r text_bornInFinland_intervention_total_answers`) reported having been born in Finland. Among the `r text_control_total_n` control arm participants, the percentage was `r text_bornInFinland_control_percentage` (`r text_bornInFinland_control_n`/`r text_bornInFinland_control_total_answers`).
+
+While on average the sample was relatively balanced on boys and girls (`r text_boyPercentage` vs. `r text_girlPercentage`), educational tracks were heavily divided by gender: Practical Nurse track had the highest amount of girls (`r text_girlPercentageNursing`) and IT track lowest (`r text_girlPercentageIT`). Age ranged from `r text_agerangeLow` to `r text_agerangeHigh`, with the average age being `r text_ageMean`. Altogether there were `r text_over20yrOlds` (`r text_percent_over20yrOlds`%) students who reported being at least 20 years old.
+
+```{r demographics-table, results = "asis", }
+
+papaja::apa_table(demotable, 
+                  caption = "Baseline demographics of educational tracks. Omitted are 24 participants, who reported \"other\" 
+                  as their track, as well as 81 participants from whom data is not available. 
+                  Nur = Practical nurse, HRC = Hotel, restaurant and catering studies, 
+                  BA = Business and administration, IT = Business information technology.",
+                  landscape = TRUE)
+
+```
+
+```{r text-some-descriptives}
+
+text_cutoff_reached_percentage <- (sum(!is.na(df$mvpaAccelerometer_T1)) / (sum(is.na(df$mvpaAccelerometer_T1)) + sum(!is.na(df$mvpaAccelerometer_T1)))) %>% round(., 3) %>% scales::percent()
+
+text_mean_mvpaDays <- df$padaysLastweek_T1 %>% mean(na.rm = TRUE) %>% round(., 1)
+
+text_gendermins <- df %>% dplyr::group_by(girl) %>% 
+  summarise(mean = mean(mvpaAccelerometer_T1, na.rm = TRUE)) %>%
+  na.omit() %>% 
+  dplyr::pull() %>% 
+  round(., 0)
+
+```
+
+Table \@ref(tab:primary-outcome-vars-table-total) shows summary statistics for primary outcome variables with their intra-class correlations (ICCs)  for class and school (see supplementary website, section https://git.io/fjIcc, for ICCs of all variables). The ICC can be interpreted as the proportion of the variable's variance accounted for by group membership.
+
+At baseline, `r text_cutoff_reached_percentage` students provided at least 4 days with a minimum of 10 hours per day of valid accelerometer data. On average, the participants reported engaging in at least 30 minutes of MVPA on `r text_mean_mvpaDays` days a week. Accelerometer data indicated, that girls were as active as boys (mean `r text_gendermins[1]` vs. `r text_gendermins[2]` minutes). Given that boys are generally more active than girls [@husuObjectivelyMeasuredSedentary2016], this result will be elaborated on below. 
+
+```{r primary-outcome-vars-table-total, results = 'asis'}
+
+load("./Rdata_files/vardatatable.Rdata")
+
+vardatatable2 <- vardatatable
+vardatatable2$Variable <- gsub("mvpaAccelerometer", "Daily moderate-to-vigorous PA time (accelerometer)*", vardatatable2$Variable)
+vardatatable2$Variable <- gsub("padaysLastweek", "Number of days with >30 MVPA min previous week (self-report)*", vardatatable2$Variable)
+vardatatable2$Variable <- gsub("sitLieAccelerometer", "Daily time spent sitting or lying down (accelerometer)*", vardatatable2$Variable)
+vardatatable2$Variable <- gsub("sitBreaksAccelerometer", "Daily number of times sitting was interrupted (accelerometer)*", vardatatable2$Variable)
+vardatatable2$Variable <- gsub("lpaAccelerometer", "Daily light PA time (accelerometer)", vardatatable2$Variable)
+vardatatable2$Variable <- gsub("standingAccelerometer", "Daily standing time (accelerometer)", vardatatable2$Variable)
+vardatatable2$Variable <- gsub("weartimeAccelerometer", "Average daily accelerometer wear time", vardatatable2$Variable)
+
+vardatatable2 <- vardatatable2 %>% 
+  dplyr::filter(Variable == "Daily moderate-to-vigorous PA time (accelerometer)*" | 
+           Variable == "Daily time spent sitting or lying down (accelerometer)*" |
+           Variable == "Daily number of times sitting was interrupted (accelerometer)*" |
+           Variable == "Number of days with >30 MVPA min previous week (self-report)*" |
+           Variable == "Daily light PA time (accelerometer)" |
+           Variable == "Daily standing time (accelerometer)" |
+           Variable == "Average total accelerometer wear time (if cutoff reached)") %>% 
+  dplyr::mutate(orderVariable = ifelse(`Variable` == "Daily moderate-to-vigorous PA time (accelerometer)*", "a",
+                                ifelse(`Variable` == "Daily light PA time (accelerometer)", "b",
+                                ifelse(`Variable` == "Daily standing time (accelerometer)", "c",
+                                ifelse(`Variable` == "Daily time spent sitting or lying down (accelerometer)*", "d",
+                                ifelse(`Variable` == "Average daily accelerometer wear time", "e",
+                                ifelse(`Variable` == "Daily number of times sitting was interrupted (accelerometer)*", "f", 
+                                ifelse(`Variable` == "Number of days with >30 MVPA min previous week (self-report)*", "g", NA))))))),
+                `ICC class` = stringr::str_replace(`ICC class`, pattern = "0.", replacement = "."),
+                `ICC school` = stringr::str_replace(`ICC school`, pattern = "0.", replacement = ".")) %>% 
+  dplyr::arrange(orderVariable) %>% 
+  dplyr::select(-orderVariable)
+
+num_rows_df <- nrow(df)
+
+text_cutoff_dropouts <- sum(!is.na(df$mvpaAccelerometer_noCutOff_T1)) - sum(!is.na(df$mvpaAccelerometer_T1))
+
+accelerometer_available <- vardatatable2 %>% 
+  dplyr::filter(Variable == "Daily moderate-to-vigorous PA time (accelerometer)*") %>% 
+  pull(n)
+
+survey_available <- vardatatable2 %>% 
+  dplyr::filter(Variable == "Number of days with >30 MVPA min previous week (self-report)*") %>% 
+  pull(n)
+
+vardatatable2 %>% 
+  papaja::apa_table(
+    caption = paste0("Key variables with their class and school intra-class correlations (ICCs). Let's Move It trial's primary outcome variables marked with asterisks. Accelerometry data is missing from ", 
+                     num_rows_df - accelerometer_available, 
+                     " participants, of whom ",
+                     text_cutoff_dropouts, 
+                     " due to not meeting the cutoff of at least 10 hours of measurement time for at least four days. Survey data missing from ",
+                     num_rows_df - survey_available,
+                     " participants."),
+    escape = TRUE, format.args = list(digits = c(3, 0), margin = 2),
+    landscape = TRUE
+  )
+
+vardatatable3 <- vardatatable2
+row.names(vardatatable3) <- vardatatable3$Variable
+
+text_ICCschool <- vardatatable3["Daily time spent sitting or lying down (accelerometer)*", "ICC class"] %>% as.numeric() %>% scales::percent() 
+text_ICCclass <- vardatatable3["Daily time spent sitting or lying down (accelerometer)*", "ICC school"] %>% as.numeric() %>% scales::percent() 
+
+```
+
+<!-- As shown, `r text_ICCschool` of variance in time spent sitting or lying down can be explained by school, and `r text_ICCclass` by classroom membership. -->
+
+To give the reader a richer perspective than from what can be gauged from considering these summary statistics only, we present the results graphically in figure \@ref(fig:average-day-activity-plot). We can see that the patterns of average baseline activity, as measured by the accelerometer, are similar within gender and intervention allocation groups. However, the charts reveal that the IT track is more sedentary compared to other tracks and that girls are actually *less* active in each educational track.
+
+```{r average-day-activity-plot, fig.cap = "Stacked bar plot drawn with R package `ggplot` (@wickhamGgplot2CreateElegant2018, code available at https://git.io/fptlp), showing proportions of accelerometer-measured physical activity (PA) in relation to measurement time, averaged over genders, arms and educational tracks. Nur = Practical nurse, HRC = Hotel, restaurant and catering, BA = Business and administration, IT = Information and communications technology.", fig.width = 12, fig.height = 6}
+
+averageDayActivityPlot_gender <- df %>% 
+  dplyr::mutate_at(vars(contains("Accelerometer"), -contains("weartime")), funs(./weartimeAccelerometer_T1)) %>% 
+  dplyr::select(girl, intervention, track,
+                     "Sedentary behaviour" = sitLieAccelerometer_T1, 
+                     "Standing still" = standingAccelerometer_T1, 
+                     "Light PA" = lpaAccelerometer_T1, 
+                     "Moderate PA" = mpaAccelerometer_T1, 
+                     "Vigorous PA" = vpaAccelerometer_T1) %>%
+  dplyr::filter(track != "Other") %>% # Drop small track "Other"
+  tidyr::gather(variable, value, -(girl:track)) %>% # Convert data to long form
+  dplyr::mutate(track = factor(track, ordered = TRUE,
+                               levels = c("Nur",
+                                          "HRC",
+                                          "BA",
+                                          "IT",
+                                          "Other")), # Order factors, to preserve presentation order
+                variable = factor(variable, ordered = TRUE,
+                                  levels = c("Sedentary behaviour", 
+                                             "Standing still", 
+                                             "Light PA", 
+                                             "Moderate PA", 
+                                             "Vigorous PA"))) %>% 
+  ggplot2::ggplot(aes(y = value, x = girl)) +
+  # coord_flip() +
+  geom_bar(aes(fill = variable), 
+           position = position_fill(reverse = TRUE),
+           stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_viridis_d(option = "inferno", begin = 0.1, end = 0.8) +
+  labs(x = NULL, y = NULL) +
+  papaja::theme_apa(base_size = 18) +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 55, hjust = 1)) + # Adjust label text
+  guides(fill = guide_legend(reverse = TRUE)) + # Make the legend order match the plot order
+  facet_wrap("track", nrow = 1) 
+
+# Same plot but for intervention/control:
+
+averageDayActivityPlot_intervention <- df %>% 
+  dplyr::select(girl, intervention, track,
+                     "Sedentary behaviour" = sitLieAccelerometer_T1, 
+                     "Standing still" = standingAccelerometer_T1, 
+                     "Light PA" = lpaAccelerometer_T1, 
+                     "Moderate PA" = mpaAccelerometer_T1, 
+                     "Vigorous PA" = vpaAccelerometer_T1) %>% 
+  dplyr::filter(track != "Other") %>% # Drop small track "Other"
+  tidyr::gather(variable, value, -(girl:track)) %>% # Convert data to long form
+  dplyr::mutate(track = factor(track, ordered = TRUE,
+                               levels = c("Nur",
+                                          "HRC",
+                                          "BA",
+                                          "IT",
+                                          "Other")), 
+                variable = factor(variable, ordered = TRUE,
+                                  levels = c("Sedentary behaviour", 
+                                             "Standing still", 
+                                             "Light PA", 
+                                             "Moderate PA", 
+                                             "Vigorous PA")),
+                intervention = factor(intervention, ordered = TRUE,
+                                      levels = c(0, 1),
+                                      labels = c("Control", "Intervention"))) %>% 
+  ggplot2::ggplot(aes(y = value, x = intervention)) +
+  # coord_flip() +
+  geom_bar(aes(fill = variable), 
+           position = position_fill(reverse = TRUE),
+           stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_viridis_d(option = "inferno", begin = 0.1, end = 0.8) +
+  labs(x = NULL, y = NULL) +
+  papaja::theme_apa(base_size = 18) +
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 55, hjust = 1)) + # Adjust label text
+  guides(fill = guide_legend(reverse = TRUE)) + # Make the legend order match the plot order
+  facet_wrap("track", nrow = 1)
+
+
+averageDayActivityPlot_gender +
+averageDayActivityPlot_intervention
+
+```
+
+```{r text_sb_means}
+activityPercentages_df <- df %>% 
+  dplyr::mutate_at(vars(contains("Accelerometer"), -contains("weartime")), funs(./weartimeAccelerometer_T1)) %>% 
+  dplyr::select(girl, intervention, track,
+                     "Sedentary behaviour" = sitLieAccelerometer_T1, 
+                     "Standing still" = standingAccelerometer_T1, 
+                     "Light PA" = lpaAccelerometer_T1, 
+                     "Moderate PA" = mpaAccelerometer_T1, 
+                     "Vigorous PA" = vpaAccelerometer_T1)
+
+text_sb_IT <- activityPercentages_df %>% 
+  dplyr::filter(track == "IT") %>% 
+  dplyr::select(`Sedentary behaviour`) %>% 
+  dplyr::pull()
+
+text_sb_IT_mean <- mean(text_sb_IT, na.rm = TRUE) %>% round(., 2) %>% scales::percent()
+
+text_sb_IT_75plus <- (sum(text_sb_IT > .75, na.rm = TRUE) / sum(!is.na(text_sb_IT))) %>% 
+  round(., 2) %>% scales::percent()
+# sum of non-missing observations is 713 instead of the 706 reported in the CI tables, 
+# because there were 7 observations without track membership
+
+```
+
+The plot shows the average activity types relative to measurement time, but hides variability around the averages. The graph does not depict, for example, that while the average portion of time spent in sedentary behaviour for the IT track was `r text_sb_IT_mean`, almost half (`r text_sb_IT_75plus`) of that track's participants were sedentary more than 75% of the time. 
+
+Zooming in on accelerometer-measured MVPA, table \@ref(tab:mvpa-table) gives us statistics -- some of which more commonly reported, others less so -- on the variable. 
+
+```{r mvpa-table, results = 'asis'}
+# PA_trackgirl_diamonds_girl <- readr::read_rds(path = "./Rdata_files/PA_trackgirl_diamonds_girl.RDS")
+# PA_trackgirl_diamonds_boy <- readr::read_rds(path = "./Rdata_files/PA_trackgirl_diamonds_boy.RDS")
+# PA_trackintervention_diamonds_intervention <- readr::read_rds(path = "./Rdata_files/PA_trackintervention_diamonds_intervention.RDS")
+# PA_trackintervention_diamonds_control <- readr::read_rds(path = "./Rdata_files/PA_trackintervention_diamonds_control.RDS")
+
+df %>% 
+  dplyr::mutate(intervention = factor(intervention, levels = c("0", "1"), labels = c("control", "intervention"))) %>% 
+  dplyr::group_by(girl, intervention, track) %>% 
+  dplyr::filter(track != "Other") %>% 
+  summarise(mean = mean(mvpaAccelerometer_T1, na.rm = TRUE),
+            sd = sd(mvpaAccelerometer_T1, na.rm = TRUE),
+            skewness = PerformanceAnalytics::skewness(mvpaAccelerometer_T1, na.rm = TRUE),
+            kurtosis = PerformanceAnalytics::kurtosis(mvpaAccelerometer_T1, na.rm = TRUE),
+            n = n()) %>% 
+  dplyr::mutate(n = as.character(n)) %>% # n thus not affected by what comes next
+  dplyr::mutate_if(is.numeric, round, digits = 1) %>% # Round the numbers
+  dplyr::mutate_if(is.numeric, format, nsmall = 1) %>% # Print decimal even when zero 
+  dplyr::mutate(`Mean; sd; skewness; kurtosis; n` = paste0("M=", mean, "; SD=", sd, "; skewness=", skewness, "; kurtosis=", kurtosis, "; n=", n)) %>% 
+  dplyr::select(-(mean:n)) %>% 
+  tidyr::spread(track, `Mean; sd; skewness; kurtosis; n`) %>% 
+  dplyr::select(Gender = girl, Arm = intervention, Nur, HRC, BA, IT) %>% 
+  papaja::apa_table(caption = "Statistics describing accelerometer-measured moderate-to-vigorous physical activity 
+                    in different educational tracks. Values not corrected for effects of clustering.",
+                  landscape = TRUE)
+
+```
+
+Figure \@ref(fig:MVPA-accelerometer-plot) displays an augmented density plot, representing and elaborating on information from table \@ref(tab:mvpa-table). The density curves can be read like a histogram, but the shape is not dependent on the bar width. They also help illustrate differences across groups, revealing potential differences in variability and distribution shape.
+
+```{r MVPA-accelerometer-plot, fig.cap = "Raincloud ridge plot combined with a diamond plot, drawn with R packages `ggridges` [@wilkeGgridgesRidgelinePlots2018] and `userfriendlyscience` (@petersUserfriendlyscienceQuantitativeAnalysis2018, code available at https://git.io/fjLBG), showing hours of accelerometer-measured moderate-to-vigorous physical activity for different educational tracks. Midpoints of diamonds indicate means, endpoints 95% credible intervals (see [@heinoBayesianEvaluationBehavior2018] for interpretation). Individual observations are presented under the density curves, with random scatter on the y-axis to ease inspection. Nur = Practical nurse, HRC = Hotel, restaurant and catering, BA = Business and administration, IT = Information and communications technology."}
+
+# The preparation of this plot depends on lenghty prior code  for the interval estimates in the diamonds (which can be greatly improved by shortening and using R package purrr), and is thus presented only in the supplement.
+
+load("./Rdata_files/MVPAplot.Rdata")
+  
+MVPAplot
+
+```
+
+```{r text_diffmins}
+text_diffmins <- df %>% dplyr::group_by(track, girl) %>% 
+  summarise(mean = mean(mvpaAccelerometer_T1, na.rm = TRUE)) %>% 
+  tidyr::spread(girl, mean) %>% 
+  mutate(mean = boy - girl,
+         minutes = round(mean, 1)) %>% 
+  filter(track != "Other", !is.na(track)) %>% 
+  arrange(-row_number()) %>% 
+  dplyr::pull(minutes)
+
+```
+
+As the diamonds in figure \@ref(fig:MVPA-accelerometer-plot) illustrate, participants who study practical nursing are the most active, followed by HRC students and BA students, with the IT track being the least active. There is considerable variation within tracks though. This explains the gender difference in MVPA: the practical nurse track is the largest, and its students, mostly girls, are the most active. The IT students, mostly boys, are the least active. 
+
+In sum, boys did more MVPA in every educational track (mean differences in minutes: `r text_diffmins[1]` for Practical nurse, `r text_diffmins[2]` for Hotel, restaurant and catering, `r text_diffmins[3]` for Business and administration, and `r text_diffmins[4]` for IT). In spite of this, girls appear more active in the aggregate. This is also known as the Simpson's paradox, and is best investigated by visualising data (see @kievitSimpsonParadoxPsychological2013 for an introduction). Examining the left side of figure \@ref(fig:MVPA-accelerometer-plot) reveals the difference between boys and girls in MVPA, the difference between Practical nurse and IT tracks, the differences in gender composition, and differences in the amount of participants in each track. These, when taken together, contribute to a comprehensive understanding of the data.
+
+Similar plots for all primary outcome variables can be found in the supplement. In brief, regardless of track, boys reported more days with at least 30 minutes of MVPA, while reporting more e.g. gym training, which was more strongly connected to the self-reported MVPA than the accelerometer-measured one. Accelerometer measurement also indicated, that boys engaged in more sedentary time and interrupted sitting less often than girls (see supplementary website, sections https://git.io/fjvWv and https://git.io/fjvCj).
+
+## Theoretical determinants
+
+In table \@ref(tab:determinant-table) below, we present the means for the primary outcome variables by gender and trial arm.   
+
+```{r determinant-table, results = 'asis'}
+load("./Rdata_files/mega_mediatortable.Rdata")
+
+papaja::apa_table(mega_mediatortable, caption = "Main theoretical determinants of physical activity (PA) and sedentary behaviour (SB). Mean (CI95, taking into account school and class membership). Action and coping planning are evaluated on a scale from 1 to 4, autonomous / controlled regulation, amotivation and behaviour change technique (BCT) use on a scale from 1 to 6 -- all other variables from 1 to 7.",
+                  landscape = TRUE)
+```
+
+```{r prepare-data-determinant-diamondplot}
+load("./Rdata_files/ci_total.Rdata")
+
+ci_total_diamond <- ci_total
+
+item_names <- ci_total_diamond %>%
+  dplyr::filter(grepl('PA_actionplan_T1|PA_copingplan_T1|PA_agreementDependentBCT_T1|PA_frequencyDependentBCT_T1|PA_amotivation_T1|PA_autonomous_T1|PA_controlled_T1|PA_goal_T1|PA_injunctiveNorm_T1|PA_descriptiveNorm_T1|PA_intention_T1|PA_outcomeExpectations_T1|PA_opportunities_T1|PA_perceivedBehaviouralControl_T1|PA_selfefficacy_T1|SB_descriptiveNorm_T1|SB_injunctiveNorm_T1|SB_intention_T1|SB_outcomeExpectations_T1', ci_total$diamondlabels)) %>% 
+  dplyr::filter(diamondlabels != "PA_goal_T1") %>% 
+  dplyr::select(diamondlabels) %>% 
+  dplyr::pull() %>% 
+  as.character()
+
+plot_df <- df %>% 
+  dplyr::select(intervention, girl, track, item_names)
+
+colnames(plot_df) <- gsub('PA_actionplan_T1', 'PA action planning', colnames(plot_df))
+colnames(plot_df) <- gsub('PA_copingplan_T1', 'PA coping planning', colnames(plot_df))
+colnames(plot_df) <- gsub('PA_agreementDependentBCT_T1', 'PA agreement-BCTs', colnames(plot_df))
+colnames(plot_df) <- gsub('PA_frequencyDependentBCT_T1', 'PA frequency-BCTs', colnames(plot_df))
+colnames(plot_df) <- gsub('PA_amotivation_T1', 'PA amotivation', colnames(plot_df))
+colnames(plot_df) <- gsub('PA_autonomous_T1', 'PA autonomous regulation', colnames(plot_df))
+colnames(plot_df) <- gsub('PA_controlled_T1', 'PA controlled regulation', colnames(plot_df))
+colnames(plot_df) <- gsub('PA_injunctiveNorm_T1', 'PA injunctive norm', colnames(plot_df))
+colnames(plot_df) <- gsub('PA_descriptiveNorm_T1', 'PA descriptive norm', colnames(plot_df))
+colnames(plot_df) <- gsub('PA_intention_T1', 'PA intention', colnames(plot_df))
+colnames(plot_df) <- gsub('PA_outcomeExpectations_T1', 'PA outcome expectations', colnames(plot_df))
+colnames(plot_df) <- gsub('PA_opportunities_T1', 'PA opportunities', colnames(plot_df))
+colnames(plot_df) <- gsub('PA_perceivedBehaviouralControl_T1', 'PA perceived behavioural control', colnames(plot_df))
+colnames(plot_df) <- gsub('PA_selfefficacy_T1', 'PA self-efficacy', colnames(plot_df))
+colnames(plot_df) <- gsub('SB_descriptiveNorm_T1', 'SB descriptive norm', colnames(plot_df))
+colnames(plot_df) <- gsub('SB_injunctiveNorm_T1', 'SB injunctive norm', colnames(plot_df))
+colnames(plot_df) <- gsub('SB_intention_T1', 'SB intention', colnames(plot_df))
+colnames(plot_df) <- gsub('SB_outcomeExpectations_T1', 'SB outcome expectations', colnames(plot_df))
+
+plotlist <- list()
+
+plot_df <- plot_df %>% dplyr::select(intervention, girl, track,
+                                     "PA intention", 
+                                     "PA perceived behavioural control",
+                                     "PA self-efficacy", 
+                                     "PA opportunities",
+                                     "PA descriptive norm",
+                                     "PA injunctive norm",
+                                     "PA outcome expectations",
+                                     "PA action planning",
+                                     "PA coping planning",
+                                     "PA autonomous regulation",
+                                     "PA controlled regulation",
+                                     "PA amotivation",
+                                     "PA agreement-BCTs",
+                                     "PA frequency-BCTs",
+                                     "SB intention",
+                                     "SB descriptive norm",
+                                     "SB injunctive norm",
+                                     "SB outcome expectations")
+
+df_controlAdvantage <- df %>%
+  dplyr::select(intervention, girl, track, 'PA_actionplan_T1', 'PA_copingplan_T1', 'PA_agreementDependentBCT_T1', 'PA_frequencyDependentBCT_T1', 'PA_amotivation_T1', 'PA_autonomous_T1', 'PA_controlled_T1', 'PA_injunctiveNorm_T1', 'PA_descriptiveNorm_T1', 'PA_intention_T1', 'PA_outcomeExpectations_T1', 'PA_opportunities_T1', 'PA_perceivedBehaviouralControl_T1', 'PA_selfefficacy_T1', 'SB_descriptiveNorm_T1', 'SB_injunctiveNorm_T1', 'SB_intention_T1', 'SB_outcomeExpectations_T1') %>% 
+  tidyr::gather(variable, value, PA_actionplan_T1:SB_outcomeExpectations_T1) %>% 
+  dplyr::group_by(intervention, variable) %>% 
+  dplyr::summarise(mean = mean(value, na.rm = TRUE)) %>% 
+  tidyr::spread(intervention, mean) 
+
+text_controlAdvantage_n <- df_controlAdvantage %>% 
+  dplyr::mutate(diff_controlMinusIntervention = `0` - `1`,
+                diff_controlMinusIntervention = 
+                  ifelse(variable == "PA_amotivation_T1", -1 * diff_controlMinusIntervention,
+                                                       diff_controlMinusIntervention)) %>% 
+  dplyr::summarise(`Variables favouring control` = sum(diff_controlMinusIntervention > 0),
+                   `Variables total` = n())
+
+text_controlAdvantage_percentages <- df_controlAdvantage %>% 
+  dplyr::mutate(proportion0by1 = `0` / `1`,
+                proportion0by1 = 
+                  ifelse(variable == "PA_amotivation_T1", `1` / `0`,
+                                                       proportion0by1)) %>% 
+  dplyr::summarise(`Mean percentage in favour of control` = (mean(proportion0by1) - 1)) %>% 
+  dplyr::pull() %>% 
+  scales::percent()
+
+```
+
+In `r text_controlAdvantage_n[[1]]` of the `r text_controlAdvantage_n[[2]]` variables presented here, the mean of the control group is more favourable than that of the intervention group (average unadjusted advantage `r text_controlAdvantage_percentages`). In figure \@ref(fig:determinant-diamondplot-manuscript), the results are visualised in a concise manner.
+
+```{r determinant-diamondplot-manuscript, fig.height = 8, fig.width = 7, fig.cap = "Diamond comparison plot drawn with R package `ufs` (@petersUfsQuantitativeAnalysis2019, code available at https://git.io/fjLBB), showing means (middle of diamonds), 99% confidence intervals (endpoints of diamonds) and individual answers (dots) separated by gender and arm. Rightmost plots show heuristic effect sizes for differences in means (transformed to Pearson's r). ICC is not accounted for in any plot."}
+
+genderComparisonDiamonds <- plot_df %>%
+  dplyr::filter(!is.na(girl)) %>% 
+  dplyr::mutate(girl = factor(girl)) %>%
+  ufs::duoComparisonDiamondPlot(items = colnames(plot_df)[21:4], 
+                                labels = colnames(plot_df)[21:4], 
+                                compareBy = "girl",
+                                comparisonColors = viridis::viridis(4, end  =  0.8)[c(3, 1)],
+                                lineSize = 0.8,
+                                alpha = 0.33,
+                                dataAlpha = .05,
+                                dataSize = .5,
+                                fixedSize = .25,
+                                showData = TRUE,
+                                drawPlot = FALSE,
+                                xbreaks = 1:7,
+                                jitterWidth = .15,
+                                jitterHeight = .3,
+                                conf.level = c(0.99, 0.99))
+
+interventionComparisonDiamonds <- plot_df %>% 
+  dplyr::mutate(intervention = forcats::fct_recode(plot_df$intervention, "Control" = "0", "Intervention" = "1")) %>% 
+  ufs::duoComparisonDiamondPlot(items = colnames(plot_df)[21:4], 
+                                labels = colnames(plot_df)[21:4], 
+                                compareBy = "intervention",
+                                comparisonColors = viridis::viridis(4, end  =  0.8)[c(2, 4)],
+                                lineSize = 0.8,
+                                alpha = 0.33,
+                                dataAlpha = .05,
+                                dataSize = .5,
+                                fixedSize = .25,
+                                showData = TRUE,
+                                drawPlot = FALSE,
+                                xbreaks = 1:7,
+                                jitterWidth = .15,
+                                jitterHeight = .3,
+                                conf.level = c(0.99, 0.99))
+
+gridExtra::grid.arrange(genderComparisonDiamonds, interventionComparisonDiamonds)
+```
+
+We can observe, for example, that SB descriptive norms are bimodal and thus the means are not representative of typical participants. In addition, several of the variables are skewed, which has implications on analytical choices as well as interpretations of the mean values. 
+
+### Behaviour change technique usage
+
+There were no clear differences in frequency-dependent BCT use between genders or arms (Figure \@ref(fig:histogram-frequencyDependentBCTs)). 
+
+```{r histogram-frequencyDependentBCTs, fig.width = 8, fig.height = 6, fig.cap = "Histogram drawn with R package `ggridges` (@wilkeGgridgesRidgelinePlots2018, code available at https://git.io/fpOLj), showing self-reported use of frequency-dependent BCTs (1 = Not once ... 6 = Daily)."}
+
+genderInterventionColors <- viridis::viridis(11, end = 0.8)
+
+bctGirls <- df %>% dplyr::select(id,
+  intervention,
+  group,
+  school,
+  girl,
+'Reminded self of positive consequences' = PA_frequencyDependentBCT_01_T1,
+'Has logged PA on paper' = PA_frequencyDependentBCT_02_T1,
+'Has monitored PA on smartphone' = PA_frequencyDependentBCT_03_T1,
+'Uses memory cues' = PA_frequencyDependentBCT_04_T1,
+'Has compared actual with goal' = PA_frequencyDependentBCT_05_T1,
+'Has thought of relevance of PA' = PA_frequencyDependentBCT_06_T1,
+'Has made environmental changes (home)' = PA_frequencyDependentBCT_07_T1,
+'Has sought social support' = PA_frequencyDependentBCT_08_T1,
+'Has evaluated why goal not reached' = PA_frequencyDependentBCT_09_T1) %>%
+  tidyr::gather(key = Variable, value = Value, 6:ncol(.)) %>%
+  dplyr::mutate(Variable = forcats::fct_reorder(Variable, .x = Value, .desc = FALSE, 
+                                                fun = mean, na.rm = TRUE)) %>% 
+  dplyr::filter(girl == "girl") %>% 
+ ggplot2::ggplot(aes(x = Value, y = Variable, group = Variable)) +
+  ggridges::geom_density_ridges2(aes(fill = Variable), stat = "binline", binwidth = 1, scale = 0.95) +
+  scale_x_continuous(breaks = c(1:6), expand = c(0, 0),
+                     name = "") +
+  scale_y_discrete(expand = c(0.01, 0), name = "", labels = NULL) +
+  ggridges::scale_fill_cyclical(values = viridis::viridis(11, end = 0.8)[7:8]) +
+  labs(title = "Girls") +
+  guides(y = "none") +
+  ggridges::theme_ridges(grid = FALSE) +
+  theme(axis.title.x = element_text(hjust = 0.5),
+        axis.title.y = element_text(hjust = 0.5),
+        plot.title = element_text(hjust = 0.5),
+        axis.text=element_text(size=10)) +
+  coord_cartesian(xlim = c(0.5, 6.5)) +
+  theme(plot.title = element_text(size=12))
+
+bctBoys <- df %>% dplyr::select(id,
+  intervention,
+  group,
+  school,
+  girl,
+'Reminded self of positive consequences' = PA_frequencyDependentBCT_01_T1,
+'Has logged PA on paper' = PA_frequencyDependentBCT_02_T1,
+'Has monitored PA on smartphone' = PA_frequencyDependentBCT_03_T1,
+'Uses memory cues' = PA_frequencyDependentBCT_04_T1,
+'Has compared actual with goal' = PA_frequencyDependentBCT_05_T1,
+'Has thought of relevance of PA' = PA_frequencyDependentBCT_06_T1,
+'Has made environmental changes (home)' = PA_frequencyDependentBCT_07_T1,
+'Has sought social support' = PA_frequencyDependentBCT_08_T1,
+'Has evaluated why goal not reached' = PA_frequencyDependentBCT_09_T1) %>%
+  tidyr::gather(key = Variable, value = Value, 6:ncol(.)) %>%
+  dplyr::mutate(Variable = forcats::fct_reorder(Variable, .x = Value, .desc = FALSE, 
+                                                fun = mean, na.rm = TRUE)) %>% 
+  dplyr::filter(girl == "boy") %>% 
+ ggplot2::ggplot(aes(x = Value, y = Variable, group = Variable)) +
+  ggridges::geom_density_ridges2(aes(fill = Variable), stat = "binline", binwidth = 1, scale = 0.95) +
+  scale_x_continuous(breaks = c(1:6), expand = c(0, 0),
+                     name = "") +
+  scale_y_discrete(expand = c(0.01, 0), name = "") +
+  ggridges::scale_fill_cyclical(values = viridis::viridis(11, end = 0.8)[1:2]) +
+  labs(title = "Boys") +
+  guides(y = "none") +
+  ggridges::theme_ridges(grid = FALSE) +
+  theme(axis.title.x = element_text(hjust = 0.5),
+        axis.title.y = element_text(hjust = 0.5),
+        plot.title = element_text(hjust = 0.5),
+        axis.text=element_text(size=10)) +
+  coord_cartesian(xlim = c(0.5, 6.5)) +
+  theme(plot.title = element_text(size=12))
+
+bctInt <- df %>% dplyr::select(id,
+  intervention,
+  group,
+  school,
+  girl,
+'Reminded self of positive consequences' = PA_frequencyDependentBCT_01_T1,
+'Has logged PA on paper' = PA_frequencyDependentBCT_02_T1,
+'Has monitored PA on smartphone' = PA_frequencyDependentBCT_03_T1,
+'Uses memory cues' = PA_frequencyDependentBCT_04_T1,
+'Has compared actual with goal' = PA_frequencyDependentBCT_05_T1,
+'Has thought of relevance of PA' = PA_frequencyDependentBCT_06_T1,
+'Has made environmental changes (home)' = PA_frequencyDependentBCT_07_T1,
+'Has sought social support' = PA_frequencyDependentBCT_08_T1,
+'Has evaluated why goal not reached' = PA_frequencyDependentBCT_09_T1) %>%
+  tidyr::gather(key = Variable, value = Value, 6:ncol(.)) %>%
+  dplyr::mutate(Variable = forcats::fct_reorder(Variable, .x = Value, .desc = FALSE, 
+                                                fun = mean, na.rm = TRUE)) %>% 
+  dplyr::filter(intervention == "1") %>% 
+ ggplot2::ggplot(aes(x = Value, y = Variable, group = Variable)) +
+  ggridges::geom_density_ridges2(aes(fill = Variable), stat = "binline", binwidth = 1, scale = 0.95) +
+  scale_x_continuous(breaks = c(1:6), expand = c(0, 0),
+                     name = "") +
+  scale_y_discrete(expand = c(0.01, 0), name = "", labels = NULL) +
+  ggridges::scale_fill_cyclical(values = viridis::viridis(11, end = 0.8)[10:11]) +
+  labs(title = "Intervention") +
+  guides(y = "none") +
+  ggridges::theme_ridges(grid = FALSE) +
+  theme(axis.title.x = element_text(hjust = 0.5),
+        axis.title.y = element_text(hjust = 0.5),
+        plot.title = element_text(hjust = 0.5),
+        axis.text=element_text(size=10)) +
+  coord_cartesian(xlim = c(0.5, 6.5)) +
+  theme(plot.title = element_text(size=12))
+
+bctCont <- df %>% dplyr::select(id,
+  intervention,
+  group,
+  school,
+  girl,
+'Reminded self of positive consequences' = PA_frequencyDependentBCT_01_T1,
+'Has logged PA on paper' = PA_frequencyDependentBCT_02_T1,
+'Has monitored PA on smartphone' = PA_frequencyDependentBCT_03_T1,
+'Uses memory cues' = PA_frequencyDependentBCT_04_T1,
+'Has compared actual with goal' = PA_frequencyDependentBCT_05_T1,
+'Has thought of relevance of PA' = PA_frequencyDependentBCT_06_T1,
+'Has made environmental changes (home)' = PA_frequencyDependentBCT_07_T1,
+'Has sought social support' = PA_frequencyDependentBCT_08_T1,
+'Has evaluated why goal not reached' = PA_frequencyDependentBCT_09_T1) %>%
+  tidyr::gather(key = Variable, value = Value, 6:ncol(.)) %>%
+  dplyr::mutate(Variable = forcats::fct_reorder(Variable, .x = Value, .desc = FALSE, 
+                                                fun = mean, na.rm = TRUE)) %>% 
+  dplyr::filter(intervention == "0") %>% 
+ ggplot2::ggplot(aes(x = Value, y = Variable, group = Variable)) +
+  ggridges::geom_density_ridges2(aes(fill = Variable), stat = "binline", binwidth = 1, scale = 0.95) +
+  scale_x_continuous(breaks = c(1:6), expand = c(0, 0),
+                     name = "") +
+  scale_y_discrete(expand = c(0.01, 0), name = "", labels = NULL) +
+  ggridges::scale_fill_cyclical(values = viridis::viridis(11, end = 0.8)[4:5]) +
+  labs(title = "Control") +
+  guides(y = "none") +
+  ggridges::theme_ridges(grid = FALSE) +
+  theme(axis.title.x = element_text(hjust = 0.5),
+        axis.title.y = element_text(hjust = 0.5),
+        plot.title = element_text(hjust = 0.5),
+        axis.text=element_text(size=10)) +
+  coord_cartesian(xlim = c(0.5, 6.5)) +
+  theme(plot.title = element_text(size=12))
+
+bctBoys + bctGirls + bctInt + bctCont + plot_layout(nrow = 1) 
+```
+
+Figure \@ref(fig:histogram-frequencyDependentBCTs) tells that the most frequent response is 1, indicating non-use of that BCT. In fact, a large number of BCTs seem to indicate a composite distribution, where one population reports never using the BCT, and another is seems normally distributed around the middle of the scale.
+
+The aforementioned forms can also be observed in the distributions of agreement-dependent BCTs, as presented in Figure \@ref(fig:histogram-agreementDependentBCTs).
+
+```{r histogram-agreementDependentBCTs, fig.width = 8, fig.height = 6, fig.cap = "Histogram drawn with R package `ggridges` (@wilkeGgridgesRidgelinePlots2018, code available at https://git.io/fjLBE), showing self-reported use of agreement-dependent BCTs (1 = Not at all true ... 6 = Completely true)."}
+
+bctGirls <- df %>% dplyr::select(id,
+  intervention,
+  group,
+  school,
+  girl,
+  'Has set goals' = PA_agreementDependentBCT_01_T1,
+  'Has made plan' = PA_agreementDependentBCT_02_T1,
+  'Plan made by other' = PA_agreementDependentBCT_03_T1,
+  'Has reminder of plan' = PA_agreementDependentBCT_04_T1,
+  'Has cut goals to subgoals' = PA_agreementDependentBCT_05_T1,
+  'Has tried new PA options' = PA_agreementDependentBCT_06_T1,
+  'Has thought of barriers' = PA_agreementDependentBCT_07_T1,
+  'Has planned for barriers' = PA_agreementDependentBCT_08_T1,
+  'Has thought of PA identity' = PA_agreementDependentBCT_09_T1,
+  'Has fitted PA to life values' = PA_agreementDependentBCT_10_T1) %>%
+  tidyr::gather(key = Variable, value = Value, 6:ncol(.)) %>%
+  dplyr::mutate(Variable = forcats::fct_reorder(Variable, .x = Value, .desc = FALSE, 
+                                                fun = mean, na.rm = TRUE)) %>% 
+  dplyr::filter(girl == "girl") %>% 
+ ggplot2::ggplot(aes(x = Value, y = Variable, group = Variable)) +
+  ggridges::geom_density_ridges2(aes(fill = Variable), stat = "binline", binwidth = 1, scale = 0.95) +
+  scale_x_continuous(breaks = c(1:6), expand = c(0, 0),
+                     name = "") +
+  scale_y_discrete(expand = c(0.01, 0), name = "", labels = NULL) +
+  ggridges::scale_fill_cyclical(values = viridis::viridis(11, end = 0.8)[7:8]) +
+  labs(title = "Girls") +
+  guides(y = "none") +
+  ggridges::theme_ridges(grid = FALSE) +
+  theme(axis.title.x = element_text(hjust = 0.5),
+        axis.title.y = element_text(hjust = 0.5),
+        plot.title = element_text(hjust = 0.5),
+        axis.text=element_text(size=10)) +
+  coord_cartesian(xlim = c(0.5, 6.5)) +
+  theme(plot.title = element_text(size=12))
+
+bctBoys <- df %>% dplyr::select(id,
+  intervention,
+  group,
+  school,
+  girl,
+  'Has set goals' = PA_agreementDependentBCT_01_T1,
+  'Has made plan' = PA_agreementDependentBCT_02_T1,
+  'Plan made by other' = PA_agreementDependentBCT_03_T1,
+  'Has reminder of plan' = PA_agreementDependentBCT_04_T1,
+  'Has cut goals to subgoals' = PA_agreementDependentBCT_05_T1,
+  'Has tried new PA options' = PA_agreementDependentBCT_06_T1,
+  'Has thought of barriers' = PA_agreementDependentBCT_07_T1,
+  'Has planned for barriers' = PA_agreementDependentBCT_08_T1,
+  'Has thought of PA identity' = PA_agreementDependentBCT_09_T1,
+  'Has fitted PA to life values' = PA_agreementDependentBCT_10_T1) %>%
+  tidyr::gather(key = Variable, value = Value, 6:ncol(.)) %>%
+  dplyr::mutate(Variable = forcats::fct_reorder(Variable, .x = Value, .desc = FALSE, 
+                                                fun = mean, na.rm = TRUE)) %>% 
+  dplyr::filter(girl == "boy") %>% 
+ ggplot2::ggplot(aes(x = Value, y = Variable, group = Variable)) +
+  ggridges::geom_density_ridges2(aes(fill = Variable), stat = "binline", binwidth = 1, scale = 0.95) +
+  scale_x_continuous(breaks = c(1:6), expand = c(0, 0),
+                     name = "") +
+  scale_y_discrete(expand = c(0.01, 0), name = "") +
+  ggridges::scale_fill_cyclical(values = viridis::viridis(11, end = 0.8)[1:2]) +
+  labs(title = "Boys") +
+  guides(y = "none") +
+  ggridges::theme_ridges(grid = FALSE) +
+  theme(axis.title.x = element_text(hjust = 0.5),
+        axis.title.y = element_text(hjust = 0.5),
+        plot.title = element_text(hjust = 0.5),
+        axis.text=element_text(size=10)) +
+  coord_cartesian(xlim = c(0.5, 6.5)) +
+  theme(plot.title = element_text(size=12))
+
+bctInt <- df %>% dplyr::select(id,
+  intervention,
+  group,
+  school,
+  girl,
+  'Has set goals' = PA_agreementDependentBCT_01_T1,
+  'Has made plan' = PA_agreementDependentBCT_02_T1,
+  'Plan made by other' = PA_agreementDependentBCT_03_T1,
+  'Has reminder of plan' = PA_agreementDependentBCT_04_T1,
+  'Has cut goals to subgoals' = PA_agreementDependentBCT_05_T1,
+  'Has tried new PA options' = PA_agreementDependentBCT_06_T1,
+  'Has thought of barriers' = PA_agreementDependentBCT_07_T1,
+  'Has planned for barriers' = PA_agreementDependentBCT_08_T1,
+  'Has thought of PA identity' = PA_agreementDependentBCT_09_T1,
+  'Has fitted PA to life values' = PA_agreementDependentBCT_10_T1) %>%
+  tidyr::gather(key = Variable, value = Value, 6:ncol(.)) %>%
+  dplyr::mutate(Variable = forcats::fct_reorder(Variable, .x = Value, .desc = FALSE, 
+                                                fun = mean, na.rm = TRUE)) %>% 
+  dplyr::filter(intervention == "1") %>% 
+ ggplot2::ggplot(aes(x = Value, y = Variable, group = Variable)) +
+  ggridges::geom_density_ridges2(aes(fill = Variable), stat = "binline", binwidth = 1, scale = 0.95) +
+  scale_x_continuous(breaks = c(1:6), expand = c(0, 0),
+                     name = "") +
+  scale_y_discrete(expand = c(0.01, 0), name = "", labels = NULL) +
+  ggridges::scale_fill_cyclical(values = viridis::viridis(11, end = 0.8)[10:11]) +
+  labs(title = "Intervention") +
+  guides(y = "none") +
+  ggridges::theme_ridges(grid = FALSE) +
+  theme(axis.title.x = element_text(hjust = 0.5),
+        axis.title.y = element_text(hjust = 0.5),
+        plot.title = element_text(hjust = 0.5),
+        axis.text=element_text(size=10)) +
+  coord_cartesian(xlim = c(0.5, 6.5)) +
+  theme(plot.title = element_text(size=12))
+
+bctCont <- df %>% dplyr::select(id,
+  intervention,
+  group,
+  school,
+  girl,
+  'Has set goals' = PA_agreementDependentBCT_01_T1,
+  'Has made plan' = PA_agreementDependentBCT_02_T1,
+  'Plan made by other' = PA_agreementDependentBCT_03_T1,
+  'Has reminder of plan' = PA_agreementDependentBCT_04_T1,
+  'Has cut goals to subgoals' = PA_agreementDependentBCT_05_T1,
+  'Has tried new PA options' = PA_agreementDependentBCT_06_T1,
+  'Has thought of barriers' = PA_agreementDependentBCT_07_T1,
+  'Has planned for barriers' = PA_agreementDependentBCT_08_T1,
+  'Has thought of PA identity' = PA_agreementDependentBCT_09_T1,
+  'Has fitted PA to life values' = PA_agreementDependentBCT_10_T1) %>%
+  tidyr::gather(key = Variable, value = Value, 6:ncol(.)) %>%
+  dplyr::mutate(Variable = forcats::fct_reorder(Variable, .x = Value, .desc = FALSE, 
+                                                fun = mean, na.rm = TRUE)) %>% 
+  dplyr::filter(intervention == "0") %>% 
+ ggplot2::ggplot(aes(x = Value, y = Variable, group = Variable)) +
+  ggridges::geom_density_ridges2(aes(fill = Variable), stat = "binline", binwidth = 1, scale = 0.95) +
+  scale_x_continuous(breaks = c(1:6), expand = c(0, 0),
+                     name = "") +
+  scale_y_discrete(expand = c(0.01, 0), name = "", labels = NULL) +
+  ggridges::scale_fill_cyclical(values = viridis::viridis(11, end = 0.8)[4:5]) +
+  labs(title = "Control") +
+  guides(y = "none") +
+  ggridges::theme_ridges(grid = FALSE) +
+  theme(axis.title.x = element_text(hjust = 0.5),
+        axis.title.y = element_text(hjust = 0.5),
+        plot.title = element_text(hjust = 0.5),
+        axis.text=element_text(size=10)) +
+  coord_cartesian(xlim = c(0.5, 6.5)) +
+  theme(plot.title = element_text(size=12))
+
+bctBoys + bctGirls + bctInt + bctCont + plot_layout(nrow = 1) 
+```
+
+## Demonstration of network analysis
+
+Figure \@ref(fig:network-plot) shows a LASSO regularised mixed graphical model of BCT use, motivation and the two MVPA measures. We can observe, that after taking into account all the other nodes in the network and regularising small connections to zero, autonomous motivation appears to serve as a link between many BCTs and MVPA. In fact, only having a plan made by someone else, and having tried out new ways to be physically active (during the past three weeks), are directly connected to either of the MVPA nodes. In addition, use of certain BCTs are coupled particularly closely: Comparatively strong links exist between goal setting and having an own PA plan, between identifying barriers and planning to overcome them (i.e. problem solving/coping planning), and between goal setting and an own PA plan (i.e. action planning). We can also see a triad, where reflecting positive consequences is connected to goal review, through having thought of personal reasons to do PA, as well as less strongly coupled social support and having made changes to home environment. Such connections can be understood as variables influencing each other, but can also be indicative of underlying latent variables (i.e., the three variables are causal consequences of a shared origin) [@molenaarLatentVariableModels2010]. 
+
+```{r network-prep, echo = FALSE, message = FALSE, include = FALSE}
+
+bctdf_mgm_T1 <- df %>% dplyr::select(
+#  id,
+#  intervention,
+#  group,
+#  school,
+#  girl,
+  'goal setting' = PA_agreementDependentBCT_01_T1,
+  'own plan' = PA_agreementDependentBCT_02_T1,
+  'plan by other' = PA_agreementDependentBCT_03_T1,
+  'reminder of plan' = PA_agreementDependentBCT_04_T1,
+  'subgoals' = PA_agreementDependentBCT_05_T1,
+  'trying new PA' = PA_agreementDependentBCT_06_T1,
+  'barrier identification' = PA_agreementDependentBCT_07_T1,
+  'problem solving' = PA_agreementDependentBCT_08_T1,
+  'PA identity reflection' = PA_agreementDependentBCT_09_T1,
+  'aligning PA with life values' = PA_agreementDependentBCT_10_T1,
+  'remind of PA benefits' = PA_frequencyDependentBCT_01_T1,
+  'self-monitor (paper)' = PA_frequencyDependentBCT_02_T1,
+  'self-monitor (app)' = PA_frequencyDependentBCT_03_T1,
+#  'memory cues' = PA_frequencyDependentBCT_04_T1, # Issues with clarity of item wording 
+  'goal review' = PA_frequencyDependentBCT_05_T1,
+  'personal relevance reflection' = PA_frequencyDependentBCT_06_T1,
+  'environmental changes (home)' = PA_frequencyDependentBCT_07_T1,
+  'social support' = PA_frequencyDependentBCT_08_T1,
+  'analysing goal failure' = PA_frequencyDependentBCT_09_T1,
+  'MVPA survey' = padaysLastweek_T1,
+  'MVPA accelerometer' = mvpaAccelerometer_T1,
+  'intrinsic' = PA_intrinsic_T1,
+  'identified' = PA_identified_T1, 'integrated' = PA_integrated_T1,
+  'controlled motivation' = PA_controlled_T1) %>%
+ rowwise() %>% 
+ mutate(
+  'goal setting' = ifelse(`goal setting` == 1, 0, 1),
+#  'has plan' = ifelse(`own plan` == 1 & `plan by other` == 1, 0, 1),
+  'own plan' = ifelse(`own plan` == 1, 0, 1),
+  'plan by other' = ifelse(`plan by other` == 1, 0, 1),
+  'reminder of plan' = ifelse(`reminder of plan` == 1, 0, 1),
+  'subgoals' = ifelse(`subgoals` == 1, 0, 1),
+  'trying new PA' = ifelse(`trying new PA` == 1, 0, 1),
+  'barrier identification' = ifelse(`barrier identification` == 1, 0, 1),
+  'problem solving' = ifelse(`problem solving` == 1, 0, 1),
+  # 'barriers identified or planned for' = ifelse(`problem solving` == 1 & `barrier identification` == 1, 0, 1),
+  'PA identity reflection' = ifelse(`PA identity reflection` == 1, 0, 1),
+  'aligning PA with life values' = ifelse(`aligning PA with life values` == 1, 0, 1),
+  # 'identity, life values' = ifelse(`PA identity reflection` == 1 & `aligning PA with life values` == 1, 0, 1),
+  'remind of PA benefits' = ifelse(`remind of PA benefits` == 1, 0, 1),
+  'monitoring PA' = ifelse(`self-monitor (paper)` == 1 & `self-monitor (app)` == 1, 0, 1),
+#  'memory cues' = ifelse(`memory cues` == 1, 0, 1),
+  'goal review' = ifelse(`goal review` == 1, 0, 1),
+  'personal relevance reflection' = ifelse(`personal relevance reflection` == 1, 0, 1),
+  'environmental changes (home)' = ifelse(`environmental changes (home)` == 1, 0, 1),
+  'social support' = ifelse(`social support` == 1, 0, 1),
+  'analysing goal failure' = ifelse(`analysing goal failure` == 1, 0, 1),
+  'autonomous motivation' = mean(c(identified, intrinsic, integrated), na.rm = T),
+#  'girl' = ifelse(girl == "girl", 1, 0),
+  'controlled motivation' = ifelse(`controlled motivation` < 3, 0, 1)) %>%  # If "at least partly" or more true, input 1. Normality otherwise a problem. 
+#  'intervention' = ifelse(intervention == "1", 1, 0)) %>% 
+  dplyr::select(-`self-monitor (paper)`, -`self-monitor (app)`, 
+                # -`plan by other`, -`own plan`, 
+                -identified, -intrinsic, -integrated,
+         -`analysing goal failure` # only concerns those who haven't reached goals
+         # -`barrier identification`, -`problem solving`, # closely related
+           ) %>% 
+#  dplyr::select(-controlled) %>% # Not really gaussian at all 
+  dplyr::select('MVPA survey', 'MVPA accelerometer', everything())
+
+bctdf_mgm_T1$`autonomous motivation`[is.nan(bctdf_mgm_T1$`autonomous motivation`)] <- NA
+
+labs <- names(bctdf_mgm_T1)
+
+# mgm wants full data, see package missForest for imputation methods
+bctdf_mgm_T1 <- bctdf_mgm_T1 %>% na.omit(.)
+# bctdf_mgm %>% names()
+mgm_variable_types <- c("g", "g", rep("c", 17), "g")
+mgm_variable_levels <- c("1", "1", rep("2", 17), "1")
+# data.frame(mgm_variable_types, mgm_variable_levels, names(bctdf_mgm))
+
+mgm_obj_T1 <- mgm::mgm(data = bctdf_mgm_T1,
+  type = mgm_variable_types,
+  level = mgm_variable_levels,
+  lambdaSel = "EBIC",
+  # lambdaFolds = 10,
+  verbatim = FALSE,
+  pbar = FALSE, 
+  binarySign = TRUE)
+
+# Node pies:
+pies_T1 <- bctdf_mgm_T1 %>% 
+  colMeans() # results in a series of means, which is ok for dichotomous vars
+pies_T1["MVPA survey"] <- pies_T1["MVPA survey"] / 7
+pies_T1["MVPA accelerometer"] <- pies_T1["MVPA accelerometer"] / max(bctdf_mgm_T1$`MVPA accelerometer`, na.rm = TRUE)
+pies_T1["autonomous motivation"] <- pies_T1["autonomous motivation"] / 5
+
+node_colors <- c(viridis::viridis(3, begin = 0.4, end = 0.99)[1], # Color 1 for MVPA (questionnaire)
+                 viridis::viridis(3, begin = 0.4, end = 0.99)[1], # Color 1 for MVPA (accelerometer)
+                 rep(viridis::viridis(3, begin = 0.4, end = 0.99)[2], 15), # 11x Color 2 for BCTs
+                 rep(viridis::viridis(3, begin = 0.4, end = 0.99)[3], 1), # Color 3 for motivation (controlled)  
+                 rep(viridis::viridis(3, begin = 0.4, end = 0.99)[2], 1), # 1x Color 2 for BCTs
+                 viridis::viridis(3, begin = 0.4, end = 0.99)[3]) # Color 3 for motivation (autonomous) 
+
+```
+
+```{r network-plot, fig.width = 12, fig.height = 6, fig.cap = "Mixed graphical model with LASSO regularisation and model selection by EBIC. Network models estimated and drawn with packages `mgm` [@haslbeckMgmEstimatingTimeVarying2019] and `qgraph` (@epskampQgraphGraphPlotting2019, code available at https://git.io/fpOXV). Blue lines indicate positive relationships. Plot shows the conditional dependence relationships between the variables of interest (edges which connect nodes), which can be interpreted akin to partial correlations. Pies depict means as proportion of theoretical maximum (in the case of accelerometer-measured moderate-to-vigorous physical activity (MVPA), mean as proportion of highest observed value); behaviour change technique (BCT) use and controlled motivation are dichotomised (see Methods). Colours distinguish the three types of nodes; MPVA, motivation, and BCT use.", echo = FALSE}
+
+BCT_mgm_T1 <- qgraph::qgraph(mgm_obj_T1$pairwise$wadj, 
+            layout = "spring",
+            repulsion = 0.99, # To nudge the network from originally bad visual state
+            edge.color = ifelse(mgm_obj_T1$pairwise$edgecolor == "darkgreen", "blue", mgm_obj_T1$pairwise$edgecolor),
+            pie = pies_T1,
+            # pieColor = pie_colors_T1,
+            pieColor = node_colors,
+            labels = names(bctdf_mgm_T1),
+            pieBorder = 1,
+            label.cex = 0.85,
+            cut = 0,
+            edge.labels = FALSE,
+            label.scale = FALSE)
+
+```
+
+
+# Conclusions
+
+This study investigated the baseline characteristics of the Let's Move It trial cohort, making use of modern tools to visualise key results and exhaustively report the analyses, findings and analytical choices made. We found high levels of sedentary behaviour in the sample, with heterogeneity across educational tracks. MVPA, motivation and BCT use were modeled as a network, which highlighted the relevance of autonomous motivation in associations between PA and BCT use.
+
+In contrast to earlier international and Finnish data collected in the general population (e.g. @husuObjectivelyMeasuredSedentary2016a), girls performed slightly more PA than boys in this sample. This is due to the practical nurse track being most active and mostly female; in other words, after accounting for track, no meaningful gender differences in accelerometer-measured MVPA could be seen. Further, boys reported doing more MVPA than girls, and the accelerometer-measurement implied boys were also more sedentary and interrupted sitting less often. Intervention and control groups were similar in their accelerometer-measured MVPA. This observation supports the decision of pairing educational tracks in randomisation, such that all tracks were represented in both arms. The practical nurse track was simultaneously the largest, the most active and had the highest percentage of girls, which means that potential gender differences in eventual intervention results should be interpreted with caution. 
+
+To our knowledge, this is one of the first studies to measure the use of potential BCTs comprehensively already at the trial baseline. As can be expected, many people indeed do use BCTs even before the intervention takes place. The results reveal that in the past three weeks, many participants report not having used self-regulation related BCTs such as planning, problem solving or goal setting, which on the other hand have been indicated to be useful techniques for PA self-management [@michieEffectiveTechniquesHealthy2009]. To our knowledge, this is also the first trial to measure the use of a range of BCTs among both control and intervention arm participants.
+
+Comprehensive, transparent reporting of results leads to a vast amount of information to be presented: visual exposition is thus vital. Visualising distributions makes the variability among study participants more salient, which informs us about the distributional assumptions that underlie many common statistical techniques. Modern and traditional approaches to data visualisation also allow us to go further than just comparing means [@rousseletDifferencesMeansRobust2017], and provide opportunities to avoid drawing false conclusions (e.g. in the case of Simpson's paradox) based on summary statistics alone.
+
+The results of the network analysis highlight, how most naturally used BCTs -- exceptions including having a plan made by someone else, and trying out new forms of PA -- possibly require autonomous motivation to affect MVPA. This finding, if corroborated in longitudinal data, would support the theoretical framework of the intervention, which held autonomy support and behavioural experiments at the forefront. So far, network models have been largely used as a tool for exploring empirical relationships among variables, often with little existing theory [@friedMentalDisordersNetworks2017a; @mottusWhyTraitsCome2017]. One could understand this as the first generation of network papers in psychology, and there have been recent calls for a second generation that is confirmatory in nature, and based on existing theories of relationships among biological, psychological and social variables [@friedMovingForwardChallenges2017].
+
+```{r text-refusals, echo = FALSE, cache = TRUE}
+
+text_total_population <- 1240
+text_unreachable_or_ineligible <- 49
+text_participants <- nrow(df)
+text_refusals <- text_total_population - text_unreachable_or_ineligible - text_participants
+refusal_percentage <- (text_refusals / (text_total_population - text_unreachable_or_ineligible)) %>% scales::percent(accuracy = 0.1)
+
+```
+
+<!-- The study and the LMI trial has a number of strengths, and will provide important information regarding ways to influence adolescent activity behaviour. Firstly, the recruitment of the baseline sample was successful, with only `r refusal_percentage` (`r text_refusals`/`r text_total_population - text_unreachable_or_ineligible`) of participants refusing to participate. Secondly, the study used also objective measures of PA and SB, shedding additional light to activity patterns, which has been commonly studied with self-reports only. Third, we have demonstrated state-of-the-art opportunities to visualise data and make it more understandable, and provided code as well as references to R packages, which we hope the reader will be able to make use of. -->
+
+The study also has limitations. It should be noted that while we consider 7-day accelerometry (with inclusion criterion of accumulating more than 4 days of over 10 hours wear time) an approximation of a participant's true habitual PA and SB in their daily life, it is not an errorless measure and it does not capture all forms of activity. Additionally, the questionnaire to measure the BCTs requires future validation [@hankonenParticipantsEnactmentBehavior2018; @bringmannHeatingMeasurementDebate2016; @flakeMeasurementSchmeasurementQuestionable2019].
+
+In the network model used, regularisation techniques are applied to remove spurious relations and control for multiple testing (for an in-depth tutorial on such regularised network models, see @epskampTutorialRegularizedPartial2018, and for a health psychology specific use case, see @heveyNetworkAnalysisBrief2018). At the same time, these networks estimate relations that are akin to partial correlations to derive the conditional dependence structure among variables. Potential pitfalls of these models and their application have been discussed elsewhere in detail [@friedMovingForwardChallenges2017; @guloksuzApplicationNetworkMethods2017]. Most importantly, while in social networks one can include all relevant nodes (e.g., all people in a classroom or company), this is not so in biopsychosocial networks, where the question of what items to include as nodes remains a challenging question. Relations among items are often interpreted as putative causal pathways (although many other interpretations exist, @epskampTutorialRegularizedPartial2018), which means one should not include two variables that are simply two indicators of the same construct (e.g. the items 'I often feel sad' and 'I often feel blue'). Another important challenge is that one should avoid statistically controlling for common effects, also known as colliders: If in the true model both A and B independently cause C, C is a collider. If one controls for C in the model, a negative relation between A and B will emerge where no relation exists in the true model. This applies to all regression models and network models that are based on regressions, and it can be challenging to determine if a given variable is a collider. Rohrer @rohrerThinkingClearlyCorrelations2018 provides an approachable introduction to causal inference in observational data.
+
+```{r average-coverage, echo = FALSE}
+
+middleprobs <- function(prob1, prob2) {
+sum(df$mvpaAccelerometer_T1 >= quantile(df$mvpaAccelerometer_T1, probs = c(prob1, prob2), na.rm = TRUE)[[1]] &
+      df$mvpaAccelerometer_T1 <= quantile(df$mvpaAccelerometer_T1, probs = c(prob1, prob2), na.rm = TRUE)[[2]] &
+    df$padaysLastweek_T1 >= quantile(df$padaysLastweek_T1, probs = c(prob1, prob2), na.rm = TRUE)[[1]] &
+      df$padaysLastweek_T1 <= quantile(df$padaysLastweek_T1, probs = c(prob1, prob2), na.rm = TRUE)[[2]] &
+    df$sitLieAccelerometer_T1 >= quantile(df$sitLieAccelerometer_T1, probs = c(prob1, prob2), na.rm = TRUE)[[1]] &
+      df$sitLieAccelerometer_T1 <= quantile(df$sitLieAccelerometer_T1, probs = c(prob1, prob2), na.rm = TRUE)[[2]] &
+    df$sitBreaksAccelerometer_T1 >= quantile(df$sitBreaksAccelerometer_T1, probs = c(prob1, prob2), na.rm = TRUE)[[1]] &
+      df$sitBreaksAccelerometer_T1 <= quantile(df$sitBreaksAccelerometer_T1, probs = c(prob1, prob2), na.rm = TRUE)[[2]],
+    na.rm= TRUE) 
+}   
+
+text_total_n <- sum(!is.na(df$mvpaAccelerometer_T1) & !is.na(df$padaysLastweek_T1))
+
+# df %>% dplyr::filter(is.na(school)) %>% DT::datatable()
+```
+
+The type of supplement used for this manuscript allows for presenting a lot, but not all, information due to resource considerations. One of the reader groups not fully considered are researchers and educators, who wish to use these data to guide intervention design. We would like to point out that the results, like most of the research in the area, only provide a group-level snapshot of a wide variety of constantly unfolding dynamic processes. Few individual participants are described by the group-level summary statistics: In fact, using Daniels' [@danielsAverageMan1952] definition of an "approximately average individual" as falling in the middle 30% of the range of values, only `r ((middleprobs(0.35, 0.65) / text_total_n) %>% round(., 3) * 100)`% of participants can be considered "average" on all of the primary outcome measures (see supplementary website, section https://git.io/fpOy1). Intervention designers looking at this cohort to choose to-be-targeted determinants for their study may want to consider applying clustering techniques on the data once it becomes publicly available. Still, and especially when processes are considered, group-level data does not inform the individual-level mechanisms of action in the case of non-ergodic systems, and hence the agreement between features of these two levels should be investigated [@fisherLackGrouptoindividualGeneralizability2018].
+
+In conclusion, this analysis of baseline data from the Let's Move It intervention trial indicates that randomisation did not result in highly disproportionate groups, i.e. the differences between arms were small -- although, in the case of complex systems, even minimal differences may proliferate and lead to group imbalances [@ricklesCausalityComplexInterventions2009]. It also highlights that vocational school students differ in many regards by their chosen educational track. Finally, graphical methods of presenting descriptive data are an important addition to traditional tables displaying means and standard deviations. Transparent sharing of analyses and analytical choices is imperative for increasing confidence in research findings.
+
+### List of abbreviations  
+
+\noindent 
+PA = Physical activity  
+MVPA = Moderate-to-vigorous physical activity  
+SB = Sedentary behaviour  
+BCT = Behaviour change technique  
+Nur = Practical nurse  
+HRC = Hotel, restaurant and catering studies  
+BA = Business and administration  
+IT = Business information technology  
+
+## Declarations  
+
+### Conflicts of interest
+
+The authors declared no conflicts of interest with respect to the authorship or the publication of this article.
+
+### Authors' contributions
+
+MH wrote the analysis code, including the full online supplement, formulated the initial draft of the manuscript and revised it in collaboration with all co-authors. TV was responsible for planning and analysing the PA and SB measured from data collected with accelerometer. RS and EIF provided expertise regarding the statistical analyses. KB, AH, AU, VA-S, TV, RS and NH contributed to planning of the trial design and data collection including the measures used. NH, with the study co-applicants, conceived of the study. NH acted as principal investigator of the research project. All authors read and approved the final manuscript.
+
+### Prior versions
+
+A pre-print has been uploaded to PsyArxiv (DOI: 10.31234/osf.io/46rzm).
+
+### Funding
+
+MH was supported by Academy of Finland (grant number 295765) and Ministry for Education and Culture, Sports Science projects (grant number OKM/81/626/2014). NH was supported by an Academy of Finland Research Fellowship (grant number 285283). The data were collected in a project funded by Ministry for Education and Culture, Sports Science projects (grant number OKM/81/626/2014).
+
+### Acknowledgements
+
+We would like to thank participating schools, their staff and students, as well as the numerous people who have helped in study design and data collection. We are also grateful to Frederik Aust for technical support in creating a reproducible manuscript, as well as Ruben Arslan in creating the codebook.
+
+
+
+
+\newpage
+
+# References
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+<div id = "refs"></div>
+\endgroup

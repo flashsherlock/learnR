@@ -1,0 +1,2 @@
+Sys.setenv("R_MAX_NUM_DLLS" = 300)
+#Sys.getenv("R_MAX_NUM_DLLS")

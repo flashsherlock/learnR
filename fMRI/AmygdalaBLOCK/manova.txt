@@ -1,0 +1,35 @@
+====== MANOVA Output (Within-Subjects Design) ======
+
+Descriptive Statistics:
+────────────────────────────
+ position    Mean    S.D.  N
+────────────────────────────
+     aSTS  933.30  509.69 20
+     FFA  2327.95 1462.75 20
+────────────────────────────
+Total sample size: N = 20
+
+ANOVA Table:
+Dependent variable(s):      Count
+Between-subjects factor(s): -
+Within-subjects factor(s):  position
+Covariate(s):               -
+──────────────────────────────────────────────────────────────────────────────
+                    MS        MSE df1 df2     F     p      η²p   [90%     CI]
+──────────────────────────────────────────────────────────────────────────────
+position  19450486.225 734817.541   1  19 26.47 <.001 *** 0.582 [0.294, 0.713]
+──────────────────────────────────────────────────────────────────────────────
+MSE = Mean Square Error (an estimate of the population variance σ²)
+
+ANOVA Effect Size:
+
+ω² = omega-squared = (SS - df1 * MSE) / (SST + MSE)
+η² = eta-squared = SS / SST
+η²G = generalized eta-squared (see Olejnik & Algina, 2003)
+η²p = partial eta-squared = SS / (SS + SSE) = F * df1 / (F * df1 + df2)
+Cohen’s f = sqrt( η²p / (1 - η²p) )
+
+Levene’s Test for Homogeneity of Variance:
+
+Mauchly’s Test of Sphericity:
+
