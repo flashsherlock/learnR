@@ -15,3 +15,5 @@ MANOVA(data=within.2, dvs="A1B1:A2B3", dvs.pattern="A(.)B(.)",
   EMMEANS("A", by="B") %>%
   EMMEANS("B", by="A") %>%  # with some errors
   EMMEANS("B", by="A", repair=TRUE)
+
+shapiro.test(matlab_data$Pre)
