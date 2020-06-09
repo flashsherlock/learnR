@@ -65,7 +65,7 @@ log <- mutate(log,fixation=Text1.Onset-Fixation.Onset)
 log <- mutate(log, word.length=ifelse(log$fixation>2900 & 
                    log$fixation<3100, 6, 9))
 # 计算正确率
-acc=100*tapply(log$Corre.Response,
+acc <- 100*tapply(log$Corre.Response,
             list(log$Subjectindex, 
                  log$Audio.Onset, 
                  log$word.length),
@@ -140,14 +140,14 @@ kable(head(rt_correct,10),
 
 ```{r }
 # 每名被试平均反应时（所有反应的）
-meanrt_all= tapply(rt_all$response.time,
+meanrt_all <- tapply(rt_all$response.time,
                    list(rt_all$Subjectindex, 
                         rt_all$Audio.Onset, 
                         rt_all$word.length),
                    mean)
 
 # 所有人的平均
-mean_all= tapply(rt_all$response.time,
+mean_all <- tapply(rt_all$response.time,
                  list(rt_all$Audio.Onset, 
                       rt_all$word.length),
                  mean)
@@ -157,14 +157,14 @@ mean_all= tapply(rt_all$response.time,
 
 ```{r}
 # 平均反应时（正确反应的）
-meanrt_correct= tapply(rt_correct$response.time,
+meanrt_correct <- tapply(rt_correct$response.time,
                    list(rt_correct$Subjectindex, 
                         rt_correct$Audio.Onset, 
                         rt_correct$word.length),
                    mean)
 
 # 所有人的平均
-mean_correct= tapply(rt_correct$response.time,
+mean_correct <- tapply(rt_correct$response.time,
                      list(rt_correct$Audio.Onset, 
                           rt_correct$word.length),
                      mean)
@@ -373,3 +373,29 @@ ggplot(analyze, aes(x=vars, y=mean,fill=group1)) +
                 position=position_dodge(.9))
 ```
 
+
+# 作业1（Unix脚本）
+
+## 提取每名被试每个trial的时长
+提取结果到数据框log里，这里展示了一下前10行
+```{bash}
+# 读取数据
+gawk '{print $1}' log.txt | grep 2 | head
+# 计算trial时长
+# trial时长是Text2.Onset-Fixation.Onset+5000，即反应前的加反应阶段的5s
+
+```
+
+## 计算每名被试在4个条件下的正确率
+
+
+## 提取4个条件下被试的反应时和正确反应的反应时
+
+提取全部反应的反应时，通过If.Response等于TRUE进行提取，这里展示了提取结果的前10行。
+
+
+接着是正确反应的反应时，通过Corre.Response等于1进行提取，这里展示了提取结果的前10行。
+
+## 计算4个条件下被试的平均反应时和正确反应的平均反应时
+
+计算4个条件每名被试所有反应的平均反应时。
