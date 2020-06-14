@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2020.2.27)  28 APR 2020 13:28
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2020.2.27)  10 JUN 2020 22:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1904,6 +1904,9 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 
 Package xcolor Warning: Incompatible color definition on input line 140.
 
+[1
+
+]
 *************************************************
 * fontspec warning: "script-not-exist"
 * 
@@ -1948,199 +1951,312 @@ Package xcolor Warning: Incompatible color definition on input line 148.
 
 Package xcolor Warning: Incompatible color definition on input line 148.
 
-[1
-
-]
-
-Package xcolor Warning: Incompatible color definition on input line 174.
-
-
-Package xcolor Warning: Incompatible color definition on input line 190.
-
-
-Package xcolor Warning: Incompatible color definition on input line 190.
-
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/sl' in size <10.5393
 7> not available
 (Font)              Font shape `TU/FandolSong-Regular(0)/m/it' tried instead on
- input line 192.
-[2
+ input line 168.
+[2]
 
-] [3
-
-]
-
-Package xcolor Warning: Incompatible color definition on input line 243.
+Package xcolor Warning: Incompatible color definition on input line 173.
 
 
-Package xcolor Warning: Incompatible color definition on input line 254.
+Package xcolor Warning: Incompatible color definition on input line 189.
 
 
-Package xcolor Warning: Incompatible color definition on input line 254.
+Package xcolor Warning: Incompatible color definition on input line 189.
 
+[3
 
-Package xcolor Warning: Incompatible color definition on input line 277.
-
-
-Package xcolor Warning: Incompatible color definition on input line 286.
-
-
-Package xcolor Warning: Incompatible color definition on input line 286.
-
-[4
+] [4
 
 ]
 
-Package xcolor Warning: Incompatible color definition on input line 314.
+Package xcolor Warning: Incompatible color definition on input line 242.
 
 
-Package xcolor Warning: Incompatible color definition on input line 329.
+Package xcolor Warning: Incompatible color definition on input line 253.
 
 
-Package xcolor Warning: Incompatible color definition on input line 329.
+Package xcolor Warning: Incompatible color definition on input line 253.
 
 
-Package xcolor Warning: Incompatible color definition on input line 333.
+Package xcolor Warning: Incompatible color definition on input line 276.
 
 
-Package xcolor Warning: Incompatible color definition on input line 348.
+Package xcolor Warning: Incompatible color definition on input line 285.
 
 
-Package xcolor Warning: Incompatible color definition on input line 348.
-
-
-Package xcolor Warning: Incompatible color definition on input line 348.
+Package xcolor Warning: Incompatible color definition on input line 285.
 
 [5
 
 ]
 
-Package xcolor Warning: Incompatible color definition on input line 348.
+Package xcolor Warning: Incompatible color definition on input line 313.
 
 
-Package xcolor Warning: Incompatible color definition on input line 348.
-
-[6] [7
+Package xcolor Warning: Incompatible color definition on input line 328.
 
 
-] [8
-
-]
-
-Package xcolor Warning: Incompatible color definition on input line 462.
+Package xcolor Warning: Incompatible color definition on input line 328.
 
 
-Package xcolor Warning: Incompatible color definition on input line 476.
+Package xcolor Warning: Incompatible color definition on input line 332.
 
 
-Package xcolor Warning: Incompatible color definition on input line 476.
+Package xcolor Warning: Incompatible color definition on input line 347.
 
 
-Package xcolor Warning: Incompatible color definition on input line 498.
+Package xcolor Warning: Incompatible color definition on input line 347.
 
 
-Package xcolor Warning: Incompatible color definition on input line 521.
+Package xcolor Warning: Incompatible color definition on input line 347.
 
-
-Package xcolor Warning: Incompatible color definition on input line 521.
-
-
-Package xcolor Warning: Incompatible color definition on input line 521.
-
-[9
+[6
 
 ]
 
-Package xcolor Warning: Incompatible color definition on input line 521.
+Package xcolor Warning: Incompatible color definition on input line 347.
 
 
-Package xcolor Warning: Incompatible color definition on input line 521.
+Package xcolor Warning: Incompatible color definition on input line 347.
+
+[7] [8
+
+] [9
+
+]
+
+Package xcolor Warning: Incompatible color definition on input line 459.
+
+
+Package xcolor Warning: Incompatible color definition on input line 473.
+
+
+Package xcolor Warning: Incompatible color definition on input line 473.
+
+
+Package xcolor Warning: Incompatible color definition on input line 495.
+
+
+Package xcolor Warning: Incompatible color definition on input line 518.
+
+
+Package xcolor Warning: Incompatible color definition on input line 518.
+
+
+Package xcolor Warning: Incompatible color definition on input line 518.
+
+[10
+
+]
+
+Package xcolor Warning: Incompatible color definition on input line 518.
+
+
+Package xcolor Warning: Incompatible color definition on input line 518.
 
 File: homework_files/figure-latex/unnamed-chunk-17-1.pdf Graphic file (type pdf
 )
 <use homework_files/figure-latex/unnamed-chunk-17-1.pdf>
 
-Package xcolor Warning: Incompatible color definition on input line 546.
-
-[10]
-
-Package xcolor Warning: Incompatible color definition on input line 550.
-
-
-Package xcolor Warning: Incompatible color definition on input line 550.
-
-
-Package xcolor Warning: Incompatible color definition on input line 571.
-
-
-Package xcolor Warning: Incompatible color definition on input line 575.
-
-
-Package xcolor Warning: Incompatible color definition on input line 575.
-
-
-Package xcolor Warning: Incompatible color definition on input line 596.
-
-
-Package xcolor Warning: Incompatible color definition on input line 602.
-
-
-Package xcolor Warning: Incompatible color definition on input line 602.
+Package xcolor Warning: Incompatible color definition on input line 543.
 
 [11]
 
-Package xcolor Warning: Incompatible color definition on input line 624.
+Package xcolor Warning: Incompatible color definition on input line 547.
 
 
-Package xcolor Warning: Incompatible color definition on input line 666.
+Package xcolor Warning: Incompatible color definition on input line 547.
 
 
-Package xcolor Warning: Incompatible color definition on input line 666.
+Package xcolor Warning: Incompatible color definition on input line 568.
 
 
-Package xcolor Warning: Incompatible color definition on input line 666.
+Package xcolor Warning: Incompatible color definition on input line 572.
+
+
+Package xcolor Warning: Incompatible color definition on input line 572.
+
+
+Package xcolor Warning: Incompatible color definition on input line 593.
+
+
+Package xcolor Warning: Incompatible color definition on input line 599.
+
+
+Package xcolor Warning: Incompatible color definition on input line 599.
 
 [12]
 
-Package xcolor Warning: Incompatible color definition on input line 666.
+Package xcolor Warning: Incompatible color definition on input line 621.
 
 
-Package xcolor Warning: Incompatible color definition on input line 666.
+Package xcolor Warning: Incompatible color definition on input line 663.
+
+
+Package xcolor Warning: Incompatible color definition on input line 663.
+
+
+Package xcolor Warning: Incompatible color definition on input line 663.
+
+[13]
+
+Package xcolor Warning: Incompatible color definition on input line 663.
+
+
+Package xcolor Warning: Incompatible color definition on input line 663.
 
 File: homework_files/figure-latex/unnamed-chunk-21-1.pdf Graphic file (type pdf
 )
 <use homework_files/figure-latex/unnamed-chunk-21-1.pdf>
 
-Package xcolor Warning: Incompatible color definition on input line 673.
+Package xcolor Warning: Incompatible color definition on input line 670.
 
-[13]
+[14]
 
-Package xcolor Warning: Incompatible color definition on input line 691.
+Package xcolor Warning: Incompatible color definition on input line 688.
 
 
-Package xcolor Warning: Incompatible color definition on input line 691.
+Package xcolor Warning: Incompatible color definition on input line 688.
 
 File: homework_files/figure-latex/unnamed-chunk-22-1.pdf Graphic file (type pdf
 )
 <use homework_files/figure-latex/unnamed-chunk-22-1.pdf>
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 695.
-[14]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 695.
+[15]
+
+Package xcolor Warning: Incompatible color definition on input line 704.
+
+
+Package xcolor Warning: Incompatible color definition on input line 710.
+
+
+Package xcolor Warning: Incompatible color definition on input line 710.
+
+
+Package xcolor Warning: Incompatible color definition on input line 723.
+
+
+Package xcolor Warning: Incompatible color definition on input line 759.
+
+
+Package xcolor Warning: Incompatible color definition on input line 759.
+
+
+Package xcolor Warning: Incompatible color definition on input line 759.
+
+[16
+
+]
+
+Package xcolor Warning: Incompatible color definition on input line 759.
+
+
+Package xcolor Warning: Incompatible color definition on input line 759.
+
+
+Package xcolor Warning: Incompatible color definition on input line 774.
+
+
+Package xcolor Warning: Incompatible color definition on input line 804.
+
+
+Package xcolor Warning: Incompatible color definition on input line 804.
+
+
+Package xcolor Warning: Incompatible color definition on input line 804.
+
+[17]
+
+Package xcolor Warning: Incompatible color definition on input line 804.
+
+
+Package xcolor Warning: Incompatible color definition on input line 804.
+
+
+Package xcolor Warning: Incompatible color definition on input line 817.
+
+
+Package xcolor Warning: Incompatible color definition on input line 848.
+
+
+Package xcolor Warning: Incompatible color definition on input line 848.
+
+
+Package xcolor Warning: Incompatible color definition on input line 848.
+
+[18]
+
+Package xcolor Warning: Incompatible color definition on input line 848.
+
+
+Package xcolor Warning: Incompatible color definition on input line 848.
+
+
+Package xcolor Warning: Incompatible color definition on input line 864.
+
+
+Package xcolor Warning: Incompatible color definition on input line 886.
+
+
+Package xcolor Warning: Incompatible color definition on input line 886.
+
+
+Package xcolor Warning: Incompatible color definition on input line 886.
+
+[19]
+
+Package xcolor Warning: Incompatible color definition on input line 886.
+
+
+Package xcolor Warning: Incompatible color definition on input line 886.
+
+
+Package xcolor Warning: Incompatible color definition on input line 898.
+
+
+Package xcolor Warning: Incompatible color definition on input line 918.
+
+
+Package xcolor Warning: Incompatible color definition on input line 918.
+
+
+Package xcolor Warning: Incompatible color definition on input line 930.
+
+
+Package xcolor Warning: Incompatible color definition on input line 958.
+
+
+Package xcolor Warning: Incompatible color definition on input line 958.
+
+
+Package xcolor Warning: Incompatible color definition on input line 958.
+
+[20]
+
+Package xcolor Warning: Incompatible color definition on input line 958.
+
+
+Package xcolor Warning: Incompatible color definition on input line 958.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 965.
+[21]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 965.
 (./homework.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 695.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 695.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 965.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 965.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 695.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 965.
  ) 
 Here is how much of TeX's memory you used:
- 32128 strings out of 493007
- 615463 string characters out of 6136719
- 708764 words of memory out of 5000000
- 35691 multiletter control sequences out of 15000+600000
+ 32194 strings out of 493007
+ 620725 string characters out of 6136719
+ 709008 words of memory out of 5000000
+ 35757 multiletter control sequences out of 15000+600000
  555237 words of font info for 81 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  57i,7n,124p,10434b,881s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on homework.pdf (14 pages).
+Output written on homework.pdf (21 pages).
